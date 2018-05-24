@@ -34,10 +34,10 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 
 /* 下記のマクロは個体/環境に合わせて変更する必要があります */
 #define GYRO_OFFSET           0  /* ジャイロセンサオフセット値(角速度0[deg/sec]時) */
-#define LIGHT_WHITE          40  /* 白色の光センサ値 */
-#define LIGHT_BLACK           0  /* 黒色の光センサ値 */
+#define LIGHT_WHITE          55  /* 白色の光センサ値 */
+#define LIGHT_BLACK           10  /* 黒色の光センサ値 */
 #define SONAR_ALERT_DISTANCE 30  /* 超音波センサによる障害物検知距離[cm] */
-#define TAIL_ANGLE_STAND_UP  93  /* 完全停止時の角度[度] */
+#define TAIL_ANGLE_STAND_UP  90  /* 完全停止時の角度[度] */
 #define TAIL_ANGLE_DRIVE      3  /* バランス走行時の角度[度] */
 #define P_GAIN             2.5F  /* 完全停止用モータ制御比例係数 */
 #define PWM_ABS_MAX          60  /* 完全停止用モータ制御PWM絶対最大値 */
@@ -53,6 +53,7 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 /* 関数プロトタイプ宣言 */
 static int32_t sonar_alert(void);
 static void tail_control(int32_t angle);
+static void backlash_cancel(signed char lpwm, signed char rpwm, int32_t *lenc, int32_t *renc);
 
 /* オブジェクトへのポインタ定義 */
 TouchSensor*    touchSensor;
@@ -160,6 +161,9 @@ void main_task(intptr_t unused)
         gyro = gyroSensor->getAnglerVelocity();
         volt = ev3_battery_voltage_mV();
 
+        /* バックラッシュキャンセル */
+        backlash_cancel(pwm_L, pwm_R, &motor_ang_l, &motor_ang_r);
+
         /* 倒立振子制御APIを呼び出し、倒立走行するための */
         /* 左右モータ出力値を得る */
         balance_control(
@@ -173,8 +177,25 @@ void main_task(intptr_t unused)
             (int8_t *)&pwm_L,
             (int8_t *)&pwm_R);
 
-        leftMotor->setPWM(pwm_L);
-        rightMotor->setPWM(pwm_R);
+        /* EV3ではモーター停止時のブレーキ設定が事前にできないため */
+        /* 出力0時に、その都度設定する */
+        if (pwm_L == 0)
+        {
+             leftMotor->stop();
+        }
+        else
+        {
+            leftMotor->setPWM(pwm_L);
+        }
+
+        if (pwm_R == 0)
+        {
+             rightMotor->stop();
+        }
+        else
+        {
+            rightMotor->setPWM(pwm_R);
+        }
 
         clock->sleep(4); /* 4msec周期起動 */
     }
@@ -266,4 +287,24 @@ void bt_task(intptr_t unused)
         }
         fputc(c, bt); /* エコーバック */
     }
+}
+
+//*****************************************************************************
+// 関数名 : backlash_cancel
+// 引数 : lpwm (左モーターPWM値 ※前回の出力値)
+//        rpwm (右モーターPWM値 ※前回の出力値)
+//        lenc (左モーターエンコーダー値)
+//        renc (右モーターエンコーダー値)
+// 返り値 : なし
+// 概要 : 直近のPWM値に応じてエンコーダー値にバックラッシュ分の値を追加します。
+//*****************************************************************************
+void backlash_cancel(signed char lpwm, signed char rpwm, int32_t *lenc, int32_t *renc)
+{
+    const int BACKLASHHALF = 4;   // バックラッシュの半分[deg]
+
+    if(lpwm < 0) *lenc += BACKLASHHALF;
+    else if(lpwm > 0) *lenc -= BACKLASHHALF;
+
+    if(rpwm < 0) *renc += BACKLASHHALF;
+    else if(rpwm > 0) *renc -= BACKLASHHALF;
 }
