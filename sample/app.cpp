@@ -61,7 +61,6 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 #define KI_TAIL            0.02F /* 尻尾用定数I */
 #define KD_TAIL            14.0F /* 尻尾用定数D */
 #define PWM_ABS_MAX           60 /* 完全停止用モータ制御PWM絶対最大値 */
-#define LOOK_UP_COLOR         28 /* ルックアップゲート用尻尾だしトレース */
 
 /* サウンド */
 #define NOTE_C4 (261.63)
@@ -308,144 +307,10 @@ void main_task(intptr_t unused)
             hard_flag = 1;
         }
 
-/*========================ゲートをくぐる=========================*/
-        if (sonar_alert() == 1 && hard_flag == 1) {/* 障害物検知 */
+        if (sonar_alert() == 1) {/* 障害物検知 */
             forward = turn = 0; /* 障害物を検知したら停止 */
             ev3_speaker_set_volume(VOLUME);
-            ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
-
-            for (int angle = 79; angle >= 70; angle--)
-            {
-                if (ev3_button_is_pressed(BACK_BUTTON)) break;
-                if(angle >= 77){
-                    leftMotor->setPWM(17);
-                    rightMotor->setPWM(17);
-                }else{
-                    leftMotor->setPWM(0);
-                    rightMotor->setPWM(0);
-                }
-                clock->reset();
-                clock->sleep(1);
-                while (clock->now() <= 400){
-                    tail_control(angle);
-                    clock->sleep(4);
-                }
-            }
-            /* 前進一回目のくぐり */
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 7500) {
-                leftMotor->setPWM(4);
-                rightMotor->setPWM(4);
-                tail_control(66);
-            }
-            /* 一度停止して尻尾の調整 */
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 2000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(66);
-            }
-            /* バックしてくぐる */
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 15500) {
-                leftMotor->setPWM(-2);
-                rightMotor->setPWM(-2);
-                tail_control(66);
-            }
-            /* 前進して2回目のくぐり */
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 9000) {
-                int pwmL, pwmR;
-                colorSensor->getRawColor(rgb_level); /* RGB取得 */
-                pwmL = 5 + (rgb_level.r - LOOK_UP_COLOR) * 0.4;
-                pwmR = 5 + (LOOK_UP_COLOR - rgb_level.r) * 0.4;
-                leftMotor->setPWM(pwmL);
-                rightMotor->setPWM(pwmR);
-                tail_control(66);
-            }
-
-            /* ここから起き上がり */
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 200) {
-                leftMotor->setPWM(-20);
-                rightMotor->setPWM(-20);
-                tail_control(70);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(78);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(85);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(90);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(92);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 200) {
-                leftMotor->setPWM(-8);
-                rightMotor->setPWM(-8);
-                tail_control(93);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(94);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 1000) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(95);
-            }
-            clock->reset();
-            clock->sleep(1);
-            while (clock->now() <= 200) {
-                leftMotor->setPWM(0);
-                rightMotor->setPWM(0);
-                tail_control(96);
-            }
-
-            /*
-                TODO : バランス制御に戻る前にgyroで位置を取り直すことで取り戻せると思われる
-                ここから走行情報のリセット
-                これをしないと今の段階では倒立制御ができずすぐに倒れる
-            */
-            /* 走行モーターエンコーダーリセット */
-            leftMotor->reset();
-            rightMotor->reset();
-
-            /* ジャイロセンサーリセット */
-            gyroSensor->reset();
-            balancer.init(-1); /* 倒立振子API初期化 */
-            hard_flag = 3;
+            ev3_speaker_play_tone(NOTE_G4, MY_SOUND_MANUAL_STOP);
         }
         else {
             if (bt_cmd == 6) { //TODO 4: おまけコマンド停止処理用
