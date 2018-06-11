@@ -165,9 +165,6 @@ void main_task(intptr_t unused)
     int       gyro_wait = 0;
     int8_t    tail_flags = 0;
     int       stairs = 1;
-    int8_t    garage = 0;
-    int       garage_cnt = 0;
-    int       distance_tmp = 0;
     int8_t    hard_flag = 0;
     Course*   mCourse = NULL;
 
@@ -262,7 +259,6 @@ void main_task(intptr_t unused)
     /**
     * Main loop for the self-balance control algorithm
     */
-    int gray = 0;
     while(1)
     {
         int32_t motor_ang_l, motor_ang_r;
@@ -301,24 +297,6 @@ void main_task(intptr_t unused)
 
         /* 現在の走行距離を取得 */
         distance_now = distance_way.distanceAll(leftMotor->getCount(), rightMotor->getCount());
-
-        /* 灰色検知 */
-        if ( 110 >= rgb_level.r && rgb_level.g <= 110 &&
-         300 < (rgb_level.r + rgb_level.g + rgb_level.b) && hard_flag == 3) {
-            gray = 1;
-            ev3_speaker_set_volume(VOLUME);
-            ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
-        }
-        else {
-            gray = 0;
-        }
-        /* 灰色検知後のガレージのための処理 */
-        if (gray == 1) {
-                turn = 0;
-                garage = 1;
-                distance_tmp = distance_now;
-                ev3_led_set_color(LED_ORANGE);
-        }
 
         /* 区間変更を監視、行うプログラム */
         if (distance_now >= mCourse[count].getDis()) { //TODO :2 コース関連 だいぶ改善されました ここがまだ改良できる
@@ -489,24 +467,6 @@ void main_task(intptr_t unused)
         motor_ang_r = rightMotor->getCount();
         gyro = gyroSensor->getAnglerVelocity();
         volt = ev3_battery_voltage_mV();
-
-        /* ガレージ処理 */
-        if (garage == 1) {
-            if (distance_now - distance_tmp < 215) {
-                forward = 10;
-            }
-            else if (garage_cnt <= 240/4) {
-                forward = -2;
-                turn = 0;
-                garage_cnt++;
-            }
-            else {
-                forward = -40;
-                turn = 0;
-                bt_cmd = 6;
-            }
-        }
-
 
         if (gyro_wait >= 5000/4) {
             gyro_wait = 0;
