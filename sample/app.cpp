@@ -106,11 +106,6 @@ static Course gCourseL[] {  // TODO 2: コース関連 だいぶ改善されま�
     { 7,  7562,  80,  0, 0.1300F, 0.0001F, 1.2000F }, //右
     { 8,  8800, 100,  0, 0.0500F, 0.0000F, 1.2000F }, //直GOOLまで
     {99,  9932,   1,  0, 0.0000F, 0.0000F, 0.0000F } //灰
-    // {10, 10351, 80,  0, 0.1150F, 0.0002F, 1.5000F }, //左
-    // {11, 10700, 30,  0, 0.1150F, 0.0002F, 1.5000F }, //左
-    // {12, 11550, 30,  0, 0.0000F, 0.0000F, 0.0000F }, //灰
-    // {13, 11800, 30,  0, 0.1900F, 0.0000F, 1.4000F }, //階段
-    // {99, 99999,  1,  0, 0.0000F, 0.0000F, 0.0000F }  //終わりのダミー
 };
 
 /* Rコース */
@@ -122,18 +117,11 @@ static Course gCourseR[]  {  //TODO :2 コース関連 だいぶ改善されま�
     { 4,  7150,100,  0, 0.1000F, 0.0001F, 1.2000F }, //緩やかに大きく右
     { 5,  8750,100,  0, 0.1000F, 0.0000F, 1.2000F }, //直GOOLまで
     {99, 10172,  1,  0, 0.0000F, 0.0000F, 0.0000F } //直GOOLまで
-    // {99, 10475,-40,  0, 0.1600F, 0.0002F, 1.5000F }, //直GOOLまで
-    // { 8, 10550, 80,  0, 0.1600F, 0.0002F, 1.5000F }, //左
-    // { 9, 11250, 50,  0, 0.1600F, 0.0002F, 1.5000F }, //左
-    // {10, 12000, 20,  0, 0.1600F, 0.0002F, 1.5000F }, //灰
-    // {11, 12275, 10,  0, 0.1600F, 0.0002F, 1.6000F }, //ルックアップ
-    // {99, 99999,  1,  0, 0.0000F, 0.0000F, 0.0000F }  //終わりのダミー
 };
 
 /* デフォルト */
 static Course gCourse[] {
     { 0,     0, 40,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    // { 0,     0, 30,  0, 0.0000F, 0.0000F, 0.0000F }, //スタート
     { 1, 99999,  1,  0, 0.0000F, 0.0000F, 0.0000F } //終わりのダミー
 };
 
@@ -144,21 +132,22 @@ static int lapTime_count = 0;
 /* 走行距離 */
 static int32_t distance_now; /*現在の走行距離を格納する変数 */
 
+static int8_t    forward;      /* 前後進命令 */
+static int8_t    turn;         /* 旋回命令 */
+static int8_t    pwm_L = 0, pwm_R = 0;
+static rgb_raw_t rgb_level;    /* カラーセンサーから取得した値を格納する構造体 */
+static int       course_number = 0; //TODO :2 コース関連 だいぶ改善されました
+static int       count = 0;  //TODO :2 コース関連 だいぶ改善されました
+static int       roket = 0;  //TODO :3 ロケットスタート用変数 タイマーの役割をしています
+static int       forward_course = 50; //TODO :2 コース関連 だいぶ改善されました
+static int       turn_course = 0; //TODO :2 コース関連 だいぶ改善されました
+static uint16_t  rgb_total = RGB_TARGET;
+static uint16_t  rgb_before;
+static Course*   mCourse = NULL;
+
 /* メインタスク */
 void main_task(intptr_t unused)
 {
-    int8_t    forward;      /* 前後進命令 */
-    int8_t    turn;         /* 旋回命令 */
-    int8_t    pwm_L = 0, pwm_R = 0;
-    rgb_raw_t rgb_level;    /* カラーセンサーから取得した値を格納する構造体 */
-    int       course_number = 0; //TODO :2 コース関連 だいぶ改善されました
-    int       count = 0;  //TODO :2 コース関連 だいぶ改善されました
-    int       roket = 0;  //TODO :3 ロケットスタート用変数 タイマーの役割をしています
-    int       forward_course = 50; //TODO :2 コース関連 だいぶ改善されました
-    int       turn_course = 0; //TODO :2 コース関連 だいぶ改善されました
-    uint16_t  rgb_total = RGB_TARGET;
-    uint16_t  rgb_before;
-    Course*   mCourse = NULL;
 
     /* 各オブジェクトを生成・初期化する */
     touchSensor = new TouchSensor(PORT_1);
@@ -172,6 +161,7 @@ void main_task(intptr_t unused)
     clock_gate  = new Clock();
 
     /* LCD画面表示 */
+    char buf[64];
     ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
     ev3_lcd_draw_string("EV3way-ET 16JZ", 0, CALIB_FONT_HEIGHT*1);
     ev3_lcd_draw_string("             M", 0, CALIB_FONT_HEIGHT*2);
@@ -248,120 +238,13 @@ void main_task(intptr_t unused)
 
     ev3_led_set_color(LED_GREEN); /* スタート通知 */
 
-    /**
-    * Main loop for the self-balance control algorithm
-    */
-    while(1)
-    {
-        int32_t motor_ang_l, motor_ang_r;
-        int32_t gyro, volt;
+    ER er = ev3_sta_cyc(CYC_HANDLER);   //周期ハンドラを起動
+    sprintf(buf, "main_task: error_code=%d", MERCD(er) );   // APIのエラーコードの表示
+    //ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT*1);     // の仕方です。
 
-        /* 参照しているコース配列が切り替わったことをLEDで知らせます */
-        if((course_number % 2) == 1) {  /* 奇数配列参照時、赤 */
-            ev3_led_set_color(LED_RED);
-        }
-        else {                          /* 偶数配列参照時、緑 */
-            ev3_led_set_color(LED_GREEN);
-        }
+    /* 自タスク(メインタスク）を待ち状態にする */
+    slp_tsk();
 
-        if (course_number == 99) {
-            bt_cmd = 6;
-        }
-
-        /* 尻尾の制御 */
-        if (bt_cmd == 6) {  // TODO :4 停止用コマンド
-        }
-        else if(roket++ < 25) {  //TODO :3 ロケットスタートと呼ぶにはまだ怪しい、改良必須
-            tail_control(TAIL_ANGLE_ROKET); /* ロケット走行用角度に制御 */
-        }
-        else {
-            tail_control(TAIL_ANGLE_DRIVE); /* バランス走行用角度に制御 */
-        }
-
-        rgb_before = rgb_total; //LPF用前処理
-        colorSensor->getRawColor(rgb_level); /* RGB取得 */
-        rgb_total = (rgb_level.r + rgb_level.g + rgb_level.b)  * KLP + rgb_before * (1 - KLP); //LPF
-
-        /* バックボタン, 転倒時停止処理 */
-        if (ev3_button_is_pressed(BACK_BUTTON) || rgb_total <= RGB_NULL) {
-            run_result();
-            break;
-        }
-
-        /* 現在の走行距離を取得 */
-        distance_now = distance_way.distanceAll(leftMotor->getCount(), rightMotor->getCount());
-
-        /* 区間変更を監視、行うプログラム */
-        if (distance_now >= mCourse[count].getDis()) { //TODO :2 コース関連 だいぶ改善されました ここがまだ改良できる
-            course_number  = mCourse[count].getCourse_num();
-            forward_course = mCourse[count].getForward();
-            turn_course    = mCourse[count].getTurn();
-            pid_walk.setPID(mCourse[count].getP() * PIDX, mCourse[count].getI() * PIDX, mCourse[count].getD() * PIDX);
-            count++;
-        }
-
-        if (sonar_alert() == 1) {/* 障害物検知 */
-            forward = turn = 0; /* 障害物を検知したら停止 */
-            // ev3_speaker_set_volume(VOLUME);
-            // ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
-        }
-        else {
-            forward = forward_course * FORWARD_X; /* 前進命令 */
-            /* PID制御 */
-            turn = pid_walk.calcControl(RGB_TARGET - rgb_total) + turn_course;
-        }
-
-        /* 倒立振子制御API に渡すパラメータを取得する */
-        motor_ang_l = leftMotor->getCount();
-        motor_ang_r = rightMotor->getCount();
-        gyro = gyroSensor->getAnglerVelocity();
-        volt = ev3_battery_voltage_mV();
-
-        /* バックラッシュキャンセル */
-        backlash_cancel(pwm_L, pwm_R, &motor_ang_l, &motor_ang_r);
-
-        balancer.setCommand(forward, turn);
-        balancer.update(gyro, motor_ang_r, motor_ang_l, volt);
-        pwm_L = balancer.getPwmRight();
-        pwm_R = balancer.getPwmLeft();
-
-        /* EV3ではモーター停止時のブレーキ設定が事前にできないため */
-        /* 出力0時に、その都度設定する */
-        if (pwm_L == 0)
-        {
-             leftMotor->stop();
-        }
-        else
-        {
-            leftMotor->setPWM(pwm_L);
-        }
-
-        if (pwm_R == 0)
-        {
-             rightMotor->stop();
-        }
-        else
-        {
-            rightMotor->setPWM(pwm_R);
-        }
-
-        /* ログを送信する処理 */
-syslog(LOG_NOTICE, "G:%3d\r", gyro);
-        if (bt_cmd == 1 || bt_cmd == 2)
-        {
-            syslog(LOG_NOTICE, "C:%2d, D:%5d, G:%3d, V:%5d, RGB%3d\r", course_number, distance_now, gyro, volt, rgb_total);
-            bt_cmd = 0;
-        }
-
-        // TODO :4 停止用コマンド
-        if (bt_cmd == 6)
-        {
-            syslog(LOG_NOTICE, " S T O P   電圧 %d\r", volt);
-            break;
-        }
-
-        clock->sleep(4); /* 4msec周期起動 */
-    }
     leftMotor->reset();
     rightMotor->reset();
     tailMotor->reset();
@@ -373,6 +256,131 @@ syslog(LOG_NOTICE, "G:%3d\r", gyro);
     ext_tsk();
 }
 
+//*****************************************************************************
+// 関数名 : controller_task
+// 引数   : 拡張情報
+// 返り値 : なし
+// 概要   : コントローラータスク
+//*****************************************************************************
+void controller_task(intptr_t unused)
+{
+    int32_t motor_ang_l, motor_ang_r;
+    int32_t gyro, volt;
+
+    /* 参照しているコース配列が切り替わったことをLEDで知らせます */
+    if((course_number % 2) == 1) {  /* 奇数配列参照時、赤 */
+        ev3_led_set_color(LED_RED);
+    }
+    else {                          /* 偶数配列参照時、緑 */
+        ev3_led_set_color(LED_GREEN);
+    }
+
+    if (course_number == 99) {
+        bt_cmd = 6;
+    }
+
+    /* 尻尾の制御 */
+    if (bt_cmd == 6) {  // TODO :4 停止用コマンド
+    }
+    else if(roket++ < 25) {  //TODO :3 ロケットスタートと呼ぶにはまだ怪しい、改良必須
+        tail_control(TAIL_ANGLE_ROKET); /* ロケット走行用角度に制御 */
+    }
+    else {
+        tail_control(TAIL_ANGLE_DRIVE); /* バランス走行用角度に制御 */
+    }
+
+    rgb_before = rgb_total; //LPF用前処理
+    colorSensor->getRawColor(rgb_level); /* RGB取得 */
+    rgb_total = (rgb_level.r + rgb_level.g + rgb_level.b)  * KLP + rgb_before * (1 - KLP); //LPF
+
+    /* バックボタン, 転倒時停止処理 */
+    if (ev3_button_is_pressed(BACK_BUTTON) || rgb_total <= RGB_NULL || bt_cmd == 6) {
+        run_result();
+        ev3_led_set_color(LED_RED);
+        wup_tsk(MAIN_TASK);        //メインタスクを起床する
+        ev3_stp_cyc(CYC_HANDLER);  //周期ハンドラを停止する
+    }
+
+    /* 現在の走行距離を取得 */
+    distance_now = distance_way.distanceAll(leftMotor->getCount(), rightMotor->getCount());
+
+    /* 区間変更を監視、行うプログラム */
+    if (distance_now >= mCourse[count].getDis()) { //TODO :2 コース関連 だいぶ改善されました ここがまだ改良できる
+        course_number  = mCourse[count].getCourse_num();
+        forward_course = mCourse[count].getForward();
+        turn_course    = mCourse[count].getTurn();
+        pid_walk.setPID(mCourse[count].getP() * PIDX, mCourse[count].getI() * PIDX, mCourse[count].getD() * PIDX);
+        count++;
+    }
+
+    if (sonar_alert() == 1) {/* 障害物検知 */
+        forward = turn = 0; /* 障害物を検知したら停止 */
+        // ev3_speaker_set_volume(VOLUME);
+        // ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
+    }
+    else {
+        forward = forward_course * FORWARD_X; /* 前進命令 */
+        /* PID制御 */
+        turn = pid_walk.calcControl(RGB_TARGET - rgb_total) + turn_course;
+    }
+
+    /* 倒立振子制御API に渡すパラメータを取得する */
+    motor_ang_l = leftMotor->getCount();
+    motor_ang_r = rightMotor->getCount();
+    gyro = gyroSensor->getAnglerVelocity();
+    volt = ev3_battery_voltage_mV();
+
+    /* バックラッシュキャンセル */
+    backlash_cancel(pwm_L, pwm_R, &motor_ang_l, &motor_ang_r);
+
+    balancer.setCommand(forward, turn);
+    balancer.update(gyro, motor_ang_r, motor_ang_l, volt);
+    pwm_L = balancer.getPwmRight();
+    pwm_R = balancer.getPwmLeft();
+
+    /* EV3ではモーター停止時のブレーキ設定が事前にできないため */
+    /* 出力0時に、その都度設定する */
+    if (pwm_L == 0)
+    {
+         leftMotor->stop();
+    }
+    else
+    {
+        leftMotor->setPWM(pwm_L);
+    }
+
+    if (pwm_R == 0)
+    {
+         rightMotor->stop();
+    }
+    else
+    {
+        rightMotor->setPWM(pwm_R);
+    }
+
+    /* ログを送信する処理 */
+    // syslog(LOG_NOTICE, "G:%3d\r", gyro);
+
+    if (bt_cmd == 1 || bt_cmd == 2)
+    {
+        syslog(LOG_NOTICE, "C:%2d, D:%5d, G:%3d, V:%5d, RGB%3d\r", course_number, distance_now, gyro, volt, rgb_total);
+        bt_cmd = 0;
+    }
+
+    clock->sleep(4); /* 4msec周期起動 */
+}
+
+//*****************************************************************************
+// 関数名 : cyc_handler
+// 引数   : 拡張情報
+// 返り値 : なし
+// 概要   : 周期ハンドラ(4ms)
+//*****************************************************************************
+void cyc_handler(intptr_t unused)
+{
+    // コントローラタスクを起動する
+    act_tsk(CONTROLLER_TASK);
+}
 
 //*****************************************************************************
 // 関数名 : sonar_alert
