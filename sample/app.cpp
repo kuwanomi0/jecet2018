@@ -38,7 +38,7 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 
 /* 下記のマクロは個体/環境に合わせて変更する必要があります */
 /* 走行に関するマクロ */
-#define GYRO_OFFSET          -1  /* ジャイロセンサオフセット値(角速度0[deg/sec]時) */
+#define GYRO_OFFSET           2  /* ジャイロセンサオフセット値(角速度0[deg/sec]時) */
 #define RGB_WHITE           160  /* 白色のRGBセンサの合計 */
 #define RGB_BLACK            10  /* 黒色のRGBセンサの合計 */
 #define RGB_TARGET          365  /*240 115*/ /*中央の境界線のRGBセンサ合計値 */
@@ -75,7 +75,7 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 static int32_t sonar_alert(void);
 static void tail_control(int32_t angle);
 static void run_result(void);
-static void balance(int8_t forward, int8_t turn, int32_t gyro, int32_t motor_ang_r, int32_t motor_ang_l, int32_t volt);
+static void backlash_cancel(signed char lpwm, signed char rpwm, int32_t *lenc, int32_t *renc);
 
 /* オブジェクトへのポインタ定義 */
 TouchSensor*    touchSensor;
@@ -96,16 +96,16 @@ Distance distance_way;
 
 /* Lコース */
 static Course gCourseL[] {  // TODO 2: コース関連 だいぶ改善されました これで30.36secでた。
-    { 0,     0,70,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    { 1,  2000,70,  0, 0.1500F, 0.0001F, 1.2000F }, //大きく右
-    { 2,  3927,70,  0, 0.1300F, 0.0002F, 1.7000F }, //左
-    { 3,  4754,70,  0, 0.0700F, 0.0000F, 1.6000F }, //直
-    { 4,  5209,70,  0, 0.1150F, 0.0002F, 1.8000F }, //左
-    { 5,  6134,70,  0, 0.0800F, 0.0000F, 1.6000F }, //直
-    { 6,  6674,70,  0, 0.1300F, 0.0002F, 2.0000F }, //左
-    { 7,  7562,70,  0, 0.1800F, 0.0002F, 1.9000F }, //右
-    { 8,  8800,70,  0, 0.0450F, 0.0000F, 1.6000F }, //直GOOLまで
-    {99,  9932, 1,  0, 0.0000F, 0.0000F, 0.0000F } //灰
+    { 0,     0, 100,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
+    { 1,  2000,  80,  0, 0.1300F, 0.0001F, 1.2000F }, //大きく右
+    { 2,  3927, 100,  0, 0.1000F, 0.0001F, 1.2000F }, //左
+    { 3,  4754, 100,  0, 0.1000F, 0.0000F, 1.2000F }, //直
+    { 4,  5209, 100,  0, 0.1000F, 0.0001F, 1.2000F }, //左
+    { 5,  6134, 100,  0, 0.1000F, 0.0000F, 1.2000F }, //直
+    { 6,  6674,  80,  0, 0.1300F, 0.0001F, 1.2000F }, //左
+    { 7,  7562,  80,  0, 0.1300F, 0.0001F, 1.2000F }, //右
+    { 8,  8800, 100,  0, 0.0500F, 0.0000F, 1.2000F }, //直GOOLまで
+    {99,  9932,   1,  0, 0.0000F, 0.0000F, 0.0000F } //灰
     // {10, 10351, 80,  0, 0.1150F, 0.0002F, 1.5000F }, //左
     // {11, 10700, 30,  0, 0.1150F, 0.0002F, 1.5000F }, //左
     // {12, 11550, 30,  0, 0.0000F, 0.0000F, 0.0000F }, //灰
@@ -115,13 +115,13 @@ static Course gCourseL[] {  // TODO 2: コース関連 だいぶ改善されま�
 
 /* Rコース */
 static Course gCourseR[]  {  //TODO :2 コース関連 だいぶ改善されました これで31.25secでた
-    { 0,     0,70,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    { 1,  2240,70,  0, 0.1600F, 0.0002F, 1.9000F }, //大きく右
-    { 2,  5400,70,  0, 0.1500F, 0.0001F, 1.8000F }, //左やや直進
-    { 3,  6350,70,  0, 0.1660F, 0.0002F, 1.4500F }, //強く左
-    { 4,  7150,70,  0, 0.1600F, 0.0002F, 1.7000F }, //緩やかに大きく右
-    { 5,  8750,70,  0, 0.1600F, 0.0002F, 1.6000F }, //直GOOLまで
-    {99, 10172, 1,  0, 0.0000F, 0.0000F, 0.0000F } //直GOOLまで
+    { 0,     0,100,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
+    { 1,  2240,100,  0, 0.1000F, 0.0001F, 1.2000F }, //大きく右
+    { 2,  5400,100,  0, 0.1000F, 0.0001F, 1.2000F }, //左やや直進
+    { 3,  6350,100,  0, 0.1060F, 0.0001F, 1.2000F }, //強く左
+    { 4,  7150,100,  0, 0.1000F, 0.0001F, 1.2000F }, //緩やかに大きく右
+    { 5,  8750,100,  0, 0.1000F, 0.0000F, 1.2000F }, //直GOOLまで
+    {99, 10172,  1,  0, 0.0000F, 0.0000F, 0.0000F } //直GOOLまで
     // {99, 10475,-40,  0, 0.1600F, 0.0002F, 1.5000F }, //直GOOLまで
     // { 8, 10550, 80,  0, 0.1600F, 0.0002F, 1.5000F }, //左
     // { 9, 11250, 50,  0, 0.1600F, 0.0002F, 1.5000F }, //左
@@ -132,7 +132,7 @@ static Course gCourseR[]  {  //TODO :2 コース関連 だいぶ改善されま�
 
 /* デフォルト */
 static Course gCourse[] {
-    { 0,     0, 30,  0, 0.1900F, 0.0001F, 1.4000F }, //スタート
+    { 0,     0, 40,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
     // { 0,     0, 30,  0, 0.0000F, 0.0000F, 0.0000F }, //スタート
     { 1, 99999,  1,  0, 0.0000F, 0.0000F, 0.0000F } //終わりのダミー
 };
@@ -149,6 +149,7 @@ void main_task(intptr_t unused)
 {
     int8_t    forward;      /* 前後進命令 */
     int8_t    turn;         /* 旋回命令 */
+    int8_t    pwm_L = 0, pwm_R = 0;
     rgb_raw_t rgb_level;    /* カラーセンサーから取得した値を格納する構造体 */
     int       course_number = 0; //TODO :2 コース関連 だいぶ改善されました
     int       count = 0;  //TODO :2 コース関連 だいぶ改善されました
@@ -301,8 +302,8 @@ void main_task(intptr_t unused)
 
         if (sonar_alert() == 1) {/* 障害物検知 */
             forward = turn = 0; /* 障害物を検知したら停止 */
-            ev3_speaker_set_volume(VOLUME);
-            ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
+            // ev3_speaker_set_volume(VOLUME);
+            // ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
         }
         else {
             forward = forward_course * FORWARD_X; /* 前進命令 */
@@ -316,12 +317,36 @@ void main_task(intptr_t unused)
         gyro = gyroSensor->getAnglerVelocity();
         volt = ev3_battery_voltage_mV();
 
-        /* 倒立振子制御APIを呼び出し、倒立走行するための */
-        /* 左右モータ出力値を得る */
-        balance(forward, turn, gyro, motor_ang_r, motor_ang_l, volt);
+        /* バックラッシュキャンセル */
+        backlash_cancel(pwm_L, pwm_R, &motor_ang_l, &motor_ang_r);
+
+        balancer.setCommand(forward, turn);
+        balancer.update(gyro, motor_ang_r, motor_ang_l, volt);
+        pwm_L = balancer.getPwmRight();
+        pwm_R = balancer.getPwmLeft();
+
+        /* EV3ではモーター停止時のブレーキ設定が事前にできないため */
+        /* 出力0時に、その都度設定する */
+        if (pwm_L == 0)
+        {
+             leftMotor->stop();
+        }
+        else
+        {
+            leftMotor->setPWM(pwm_L);
+        }
+
+        if (pwm_R == 0)
+        {
+             rightMotor->stop();
+        }
+        else
+        {
+            rightMotor->setPWM(pwm_R);
+        }
 
         /* ログを送信する処理 */
-
+syslog(LOG_NOTICE, "G:%3d\r", gyro);
         if (bt_cmd == 1 || bt_cmd == 2)
         {
             syslog(LOG_NOTICE, "C:%2d, D:%5d, G:%3d, V:%5d, RGB%3d\r", course_number, distance_now, gyro, volt, rgb_total);
@@ -488,18 +513,21 @@ static void run_result() {
 }
 
 //*****************************************************************************
-// 関数名 : balance
-// 引数 : balancer, forward, turn, gyro, motor_ang_r, motor_ang_l, volt
+// 関数名 : backlash_cancel
+// 引数 : lpwm (左モーターPWM値 ※前回の出力値)
+//        rpwm (右モーターPWM値 ※前回の出力値)
+//        lenc (左モーターエンコーダー値)
+//        renc (右モーターエンコーダー値)
 // 返り値 : なし
-// 概要 : バランス走行制御を行う
+// 概要 : 直近のPWM値に応じてエンコーダー値にバックラッシュ分の値を追加します。
 //*****************************************************************************
-static void balance(int8_t forward, int8_t turn, int32_t gyro, int32_t motor_ang_r, int32_t motor_ang_l, int32_t volt) {
-    int8_t    pwm_L, pwm_R;
-    balancer.setCommand(forward, turn);
-    balancer.update(gyro, motor_ang_r, motor_ang_l, volt);
-    pwm_L = balancer.getPwmRight();
-    pwm_R = balancer.getPwmLeft();
+void backlash_cancel(signed char lpwm, signed char rpwm, int32_t *lenc, int32_t *renc)
+{
+    const int BACKLASHHALF = 0;   // バックラッシュの半分[deg]
 
-    leftMotor->setPWM(pwm_L);
-    rightMotor->setPWM(pwm_R);
+    if(lpwm < 0) *lenc += BACKLASHHALF;
+    else if(lpwm > 0) *lenc -= BACKLASHHALF;
+
+    if(rpwm < 0) *renc += BACKLASHHALF;
+    else if(rpwm > 0) *renc -= BACKLASHHALF;
 }
