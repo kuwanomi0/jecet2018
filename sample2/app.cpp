@@ -39,12 +39,8 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 /* 下記のマクロは個体/環境に合わせて変更する必要があります */
 /* 走行に関するマクロ */
 #define GYRO_OFFSET           2  /* ジャイロセンサオフセット値(角速度0[deg/sec]時) */
-#define RGB_WHITE           160  /* 白色のRGBセンサの合計 */
-#define RGB_BLACK            10  /* 黒色のRGBセンサの合計 */
-#define RGB_TARGET          365  /*240 115*/ /*中央の境界線のRGBセンサ合計値 */
+#define RGB_TARGET          365  /*中央の境界線のRGBセンサ合計値 */
 #define RGB_NULL              7  /* 何もないときのセンサの合計 */
-#define PIDX               1.00  /* PID倍率 */
-#define FORWARD_X          1.00  /* forward倍率 電源出力低下時にここで調整 */
 #define KLP                 0.6  /* LPF用係数*/
 
 /* 超音波センサーに関するマクロ */
@@ -61,10 +57,6 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 #define KD_TAIL            14.0F /* 尻尾用定数D */
 #define PWM_ABS_MAX           60 /* 完全停止用モータ制御PWM絶対最大値 */
 
-/* サウンド */
-#define NOTE_C4 (261.63)
-#define MY_SOUND_MANUAL_STOP (100)
-#define VOLUME 50
 
 /* LCDフォントサイズ */
 #define CALIB_FONT (EV3_FONT_SMALL)
@@ -94,35 +86,10 @@ PID pid_walk(      0,       0,       0); /* 走行用のPIDインスタンス */
 PID pid_tail(KP_TAIL, KI_TAIL, KD_TAIL); /* 尻尾用のPIDインスタンス */
 Distance distance_way;
 
-/* Lコース */
-static Course gCourseL[] {  // TODO 2: コース関連 だいぶ改善されました これで30.36secでた。
-    { 0,     0,  90,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    { 1,  2000,  90,  0, 0.1300F, 0.0001F, 1.2000F }, //大きく右
-    { 2,  3927,  90,  0, 0.1000F, 0.0001F, 1.2000F }, //左
-    { 3,  4754,  90,  0, 0.1000F, 0.0000F, 1.2000F }, //直
-    { 4,  5209,  90,  0, 0.1000F, 0.0001F, 1.2000F }, //左
-    { 5,  6134,  90,  0, 0.1000F, 0.0000F, 1.2000F }, //直
-    { 6,  6674,  90,  0, 0.1300F, 0.0001F, 1.2000F }, //左
-    { 7,  7562,  90,  0, 0.1300F, 0.0001F, 1.2000F }, //右
-    { 8,  8800,  90,  0, 0.0500F, 0.0000F, 1.2000F }, //直GOOLまで
-    {99,  9932,   1,  0, 0.0000F, 0.0000F, 0.0000F } //灰
-};
-
-/* Rコース */
-static Course gCourseR[]  {  //TODO :2 コース関連 だいぶ改善されました これで31.25secでた
-    { 0,     0, 90,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    { 1,  2240, 90,  0, 0.1000F, 0.0001F, 1.2000F }, //大きく右
-    { 2,  5400, 90,  0, 0.1000F, 0.0001F, 1.2000F }, //左やや直進
-    { 3,  6350, 90,  0, 0.1060F, 0.0001F, 1.2000F }, //強く左
-    { 4,  7150, 90,  0, 0.1000F, 0.0001F, 1.2000F }, //緩やかに大きく右
-    { 5,  8750, 90,  0, 0.1000F, 0.0000F, 1.2000F }, //直GOOLまで
-    {99, 10172,  1,  0, 0.0000F, 0.0000F, 0.0000F } //直GOOLまで
-};
-
 /* デフォルト */
 static Course gCourse[] {
-    { 0,     0, 40,  0, 0.0500F, 0.0000F, 1.2000F }, //スタート
-    { 1, 99999,  1,  0, 0.0000F, 0.0000F, 0.0000F } //終わりのダミー
+    { 0,     0, 80, 0.0500F, 0.0000F, 1.2000F }, //スタート
+    { 1, 99999,  1, 0.0000F, 0.0000F, 0.0000F } //終わりのダミー
 };
 
 /* タイム格納用 */
@@ -140,7 +107,6 @@ static int       course_number = 0; //TODO :2 コース関連 だいぶ改善さ
 static int       count = 0;  //TODO :2 コース関連 だいぶ改善されました
 static int       roket = 0;  //TODO :3 ロケットスタート用変数 タイマーの役割をしています
 static int       forward_course = 50; //TODO :2 コース関連 だいぶ改善されました
-static int       turn_course = 0; //TODO :2 コース関連 だいぶ改善されました
 static uint16_t  rgb_total = RGB_TARGET;
 static uint16_t  rgb_before;
 static Course*   mCourse = NULL;
@@ -167,7 +133,6 @@ void main_task(intptr_t unused)
     char buf[64];
     ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
     ev3_lcd_draw_string("EV3way-ET 16JZ", 0, CALIB_FONT_HEIGHT*1);
-    ev3_lcd_draw_string("             M", 0, CALIB_FONT_HEIGHT*2);
 
     /* 尻尾モーターのリセット */
     for(int i = 0; i < 500; i++){
@@ -192,40 +157,11 @@ void main_task(intptr_t unused)
     {
         tail_control(angle); /* 完全停止用角度に制御、調整も可 */
 
-        /* Lコース */
-        if (bt_cmd == 1)
-        {
-            mCourse = gCourseL;
-            break; /* リモートスタート */
-        }
-        /* Rコース */
-        if (bt_cmd == 2)
-        {
-            mCourse = gCourseR;
-            break; /* リモートスタート */
-        }
         /* デフォルコース */
-        if (touchSensor->isPressed() || bt_cmd == 3)
+        if (touchSensor->isPressed() || bt_cmd == 1)
         {
             mCourse = gCourse;
             break; /* タッチセンサが押された */
-        }
-
-        // スタート前の尻尾調整
-        if (ev3_button_is_pressed(DOWN_BUTTON) || bt_cmd == ']') {
-            angle -= 0.1;
-            bt_cmd = 0; // コマンドリセット
-            syslog(LOG_NOTICE, "DEBUG, angle : %d, RealAngle : %d\r", (int)angle, tailMotor->getCount());
-        }
-        if (ev3_button_is_pressed(UP_BUTTON) || bt_cmd == '[') {
-            angle += 0.1;
-            bt_cmd = 0; // コマンドリセット
-            syslog(LOG_NOTICE, "DEBUG, angle : %d, RealAngle : %d\r", (int)angle, tailMotor->getCount());
-        }
-
-        /* 尻尾の状態表示 */
-        if (bt_cmd == '@') {
-            syslog(LOG_NOTICE, "DEBUG, angle : %d, RealAngle : %d\r", (int)angle, tailMotor->getCount());
         }
 
         clock->sleep(10); /* 10msecウェイト */
@@ -268,7 +204,7 @@ void main_task(intptr_t unused)
 void controller_task(intptr_t unused)
 {
     /* 時間計測開始 */
-	get_utm(&start_time);
+	// get_utm(&start_time);
 
     int32_t motor_ang_l, motor_ang_r;
     int32_t gyro, volt;
@@ -314,20 +250,17 @@ void controller_task(intptr_t unused)
     if (distance_now >= mCourse[count].getDis()) { //TODO :2 コース関連 だいぶ改善されました ここがまだ改良できる
         course_number  = mCourse[count].getCourse_num();
         forward_course = mCourse[count].getForward();
-        turn_course    = mCourse[count].getTurn();
-        pid_walk.setPID(mCourse[count].getP() * PIDX, mCourse[count].getI() * PIDX, mCourse[count].getD() * PIDX);
+        pid_walk.setPID(mCourse[count].getP(), mCourse[count].getI(), mCourse[count].getD());
         count++;
     }
 
     if (sonar_alert() == 1) {/* 障害物検知 */
         forward = turn = 0; /* 障害物を検知したら停止 */
-        // ev3_speaker_set_volume(VOLUME);
-        // ev3_speaker_play_tone(NOTE_C4, MY_SOUND_MANUAL_STOP);
     }
     else {
-        forward = forward_course * FORWARD_X; /* 前進命令 */
+        forward = forward_course; /* 前進命令 */
         /* PID制御 */
-        turn = pid_walk.calcControl(RGB_TARGET - rgb_total) + turn_course;
+        turn = pid_walk.calcControl(RGB_TARGET - rgb_total);
     }
 
     /* 倒立振子制御API に渡すパラメータを取得する */
@@ -366,12 +299,6 @@ void controller_task(intptr_t unused)
 
     /* ログを送信する処理 */
     // syslog(LOG_NOTICE, "G:%3d\r", gyro);
-
-    // if (bt_cmd == 1 || bt_cmd == 2)
-    // {
-    //     syslog(LOG_NOTICE, "C:%2d, D:%5d, G:%3d, V:%5d, RGB%3d\r", course_number, distance_now, gyro, volt, rgb_total);
-    //     bt_cmd = 0;
-    // }
 
     // clock->sleep(4);
 
@@ -473,36 +400,16 @@ void bt_task(intptr_t unused)
             bt_cmd = 0;
             break;
         case '1':
-        case 'l':
             bt_cmd = 1;
-            break;
-        case '2':
-        case 'r':
-            bt_cmd = 2;
-            break;
-        case '3':
-            bt_cmd = 3;
             break;
         case '6':
             bt_cmd = 6;
-            break;
-        case '[':   // 上
-            bt_cmd = '[';
-            break;
-        case ']':   // 下
-            bt_cmd = ']';
-            break;
-        case '@':
-            bt_cmd = '@';
             break;
         case '\r':
             bt_cmd = '\r';
             break;
         default:
             break;
-        }
-        if (!(bt_cmd == '[' || bt_cmd == ']')) {    // TODO uとdのときはエコーバックしないようにしたい。未完成
-            fputc(c, bt); /* エコーバック */
         }
         if (bt_cmd == 1 || bt_cmd == 2) {
             clock->reset();
