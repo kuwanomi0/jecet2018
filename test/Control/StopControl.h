@@ -9,17 +9,18 @@
 
 #include "ev3api/Motor.h"
 
-namespace Control
+namespace control
 {
 class StopControl
 {
 private:
 	ev3api::Motor motor;
+	ev3api::Motor motor;
 
 public:
-	void í‚é~Ç∑ÇÈ();
+	void ÂÅúÊ≠¢„Åô„Çã();
 
 };
 
-}  // namespace Control
+}  // namespace control
 #endif

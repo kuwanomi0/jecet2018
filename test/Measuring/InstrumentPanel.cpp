@@ -4,10 +4,10 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Œv‘ª”Õ.h"
+#include "InstrumentPanel.h"
 
-namespace Measuring
+namespace measuring
 {
 
 
-}  // namespace Measuring
+}  // namespace measuring

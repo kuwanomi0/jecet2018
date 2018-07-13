@@ -6,10 +6,10 @@
 
 #include "StopControl.h"
 
-namespace Control
+namespace control
 {
 
-void StopControl::’â~‚·‚é()
+void StopControl::åœæ­¢ã™ã‚‹()
 {
 }
-}  // namespace Control
+}  // namespace control

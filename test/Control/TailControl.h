@@ -8,28 +8,29 @@
 #include <assert.h>
 
 #include "ev3api/Motor.h"
-#include "Control/PID.h"
+#include "control/PID.h"
 
-namespace Control
+namespace control
 {
 class TailControl
 {
 private:
-	int –Ú•WŠp;
+	int ç›®æ¨™è§’;
 
 	ev3api::Motor motor;
 	PID pID;
+	ev3api::Motor motor;
 
 public:
 	/**
 	 * 
 	 * 
 	 */
-	void İ’è‚·‚é(int –Ú•WŠp);
+	void è¨­å®šã™ã‚‹(int ç›®æ¨™è§’);
 
-	void §Œä‚·‚é();
+	void åˆ¶å¾¡ã™ã‚‹();
 
 };
 
-}  // namespace Control
+}  // namespace control
 #endif

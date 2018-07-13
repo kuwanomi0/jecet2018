@@ -8,20 +8,22 @@
 #include <assert.h>
 
 #include "ev3api/Motor.h"
-#include "Control/PID.h"
+#include "control/PID.h"
 
-namespace Control
+namespace control
 {
 class DrivingControl
 {
 private:
 	ev3api::Motor motor;
 	PID pID;
+	ev3api::Motor motor;
+	ev3api::Motor motor;
 
 public:
-	void ëñçsÇ∑ÇÈ();
+	void Ëµ∞Ë°å„Åô„Çã();
 
 };
 
-}  // namespace Control
+}  // namespace control
 #endif

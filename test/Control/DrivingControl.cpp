@@ -6,10 +6,10 @@
 
 #include "DrivingControl.h"
 
-namespace Control
+namespace control
 {
 
-void DrivingControl::ëñçsÇ∑ÇÈ()
+void DrivingControl::Ëµ∞Ë°å„Åô„Çã()
 {
 }
-}  // namespace Control
+}  // namespace control

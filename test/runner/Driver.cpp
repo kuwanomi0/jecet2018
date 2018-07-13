@@ -6,10 +6,10 @@
 
 #include "Driver.h"
 
-namespace  Traveling ody
+namespace runner
 {
 
-void Driver::‹æŠÔ‚ğ“n‚·()
+void Driver::åŒºé–“ã‚’æ¸¡ã™()
 {
 }
-}  // namespace  Traveling ody
+}  // namespace runner

@@ -1,5 +1,5 @@
-#ifndef MEASURING_ƒ\ƒi[‹——£_H
-#define MEASURING_ƒ\ƒi[‹——£_H
+#ifndef MEASURING_SONER_DISTANCE_H
+#define MEASURING_SONER_DISTANCE_H
 
 #include <string>
 #include <vector>
@@ -10,17 +10,17 @@
 #include "ev3api/SonarSensor.h"
 #include "ev3api/int8_t.h"
 
-namespace Measuring
+namespace measuring
 {
-class ƒ\ƒi[‹——£
+class SonerDistance
 {
 private:
 	ev3api::SonarSensor sonarSensor;
 
 public:
-	ev3api::int8_t ‹——£‚ğ‘ª‚é();
+	ev3api::int8_t è·é›¢ã‚’æ¸¬ã‚‹();
 
 };
 
-}  // namespace Measuring
+}  // namespace measuring
 #endif
