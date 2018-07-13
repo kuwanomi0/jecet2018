@@ -1,11 +1,13 @@
+/**
+ ******************************************************************************
+ ** ファイル名 : InstrumentPanel.h
+ ** クラス名   : InstrumentPanel
+ **
+ ** 概要 : 走行情報を所持するクラス
+ ******************************************************************************
+ **/
 #ifndef MEASURING_INSTRUMENT_PANEL_H
 #define MEASURING_INSTRUMENT_PANEL_H
-
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
 
 #include "measuring/RunningDistance.h"
 #include "measuring/Color.h"
@@ -13,23 +15,18 @@
 #include "measuring/SonerDistance.h"
 #include "measuring/RunningTime.h"
 
-namespace measuring
-{
 class InstrumentPanel
 {
 private:
-	RunningDistance distance;
+    RunningDistance distance;
+    Color color;
+    ImpactSensor impact;
+    SonerDistance sonar;
+    RunningTime time;
+    Color color;
 
-	Color color;
+public:
 
-	ImpactSensor impact;
 
-	SonerDistance sonar;
-
-	RunningTime time;
-
-	Color color;
 };
-
-}  // namespace measuring
-#endif
+#endif  // MEASURING_INSTRUMENT_PANEL_H

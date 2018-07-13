@@ -4,8 +4,12 @@
 #include <iostream>
 #include <assert.h>
 
-#include "DrivingControl.h"
+#include "GyroPanel.h"
 
-void DrivingControl::走行する()
+namespace measuring
+{
+
+void GyroPanel::getGyro()
 {
 }
+}  // namespace measuring

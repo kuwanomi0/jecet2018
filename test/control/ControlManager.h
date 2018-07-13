@@ -1,17 +1,19 @@
+/**
+ ******************************************************************************
+ ** ファイル名 : ControlManager.h
+ ** クラス名   : ControlManager
+ **
+ ** 概要 : 制御を管理するクラス
+ ******************************************************************************
+ **/
 #ifndef CONTROL_CONTROL_MANAGER_H
 #define CONTROL_CONTROL_MANAGER_H
 
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
-namespace control
-{
 class ControlManager
 {
-};
+private:
 
-}  // namespace control
-#endif
+public:
+
+};
+#endif  // CONTROL_CONTROL_MANAGER_H
