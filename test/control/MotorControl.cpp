@@ -4,8 +4,8 @@
 #include <iostream>
 #include <assert.h>
 
-#include "DrivingControl.h"
+#include "MotorControl.h"
 
-void DrivingControl::走行する()
+void MotorControl::走行する()
 {
 }
