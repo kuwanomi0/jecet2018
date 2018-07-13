@@ -1,6 +1,6 @@
-APPL_COBJS += balancer.o balancer_param.o
+APPL_COBJS +=
 
-APPL_CXXOBJS += BalancerCpp.o PID.o
+APPL_CXXOBJS +=
 SRCLANG := c++
 
 ifdef CONFIG_EV3RT_APPLICATION
