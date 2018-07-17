@@ -12,6 +12,7 @@
 #include "BalancerCpp.h"
 #include "MotorControl.h"
 #include "TailControl.h"
+#include "PID.h"
 
 class ControlManager
 {
@@ -19,6 +20,7 @@ private:
     Balancer* balancer;
     MotorControl* mc;
     TailControl* tc;
+    PID* motorPid;
 
 public:
     ControlManager();
@@ -26,5 +28,7 @@ public:
     void wheelInit();
     void balancerInit();
     void running(int forward, int turn, int angle);
+    void running(int forward, int turn, int angle, int32_t gyro, int volt, int totalRGB);
+    void stop();
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

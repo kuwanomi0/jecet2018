@@ -10,6 +10,7 @@
 #define RUNNER_RUNNER_H
 
 // #include "scenario/シナリオ.h"
+#include "ev3api.h"
 #include "../control/ControlManager.h"
 #include "../measuring/InstrumentPanel.h"
 
@@ -23,6 +24,8 @@ public:
     Runner();
     void exec();
     void start();
+    void run();
+    void bt_task();
     // void 走る(scenario::シナリオ s);
 
 };

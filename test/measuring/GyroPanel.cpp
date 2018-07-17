@@ -15,3 +15,7 @@ GyroPanel::GyroPanel() {
 void GyroPanel::init() {
     gyroSensor->reset();
 }
+
+int32_t GyroPanel::getGyro() {
+    return gyroSensor->getAnglerVelocity();
+}

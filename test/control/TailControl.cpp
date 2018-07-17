@@ -35,3 +35,7 @@ void TailControl::setControl(int angle) {
 
     tailMotor->setPWM(pwm);
 }
+
+void TailControl::stop() {
+    tailMotor->reset();
+}

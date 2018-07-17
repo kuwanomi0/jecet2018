@@ -10,7 +10,6 @@
 #define CONTROL_MOTOR_CONTROL_H
 
 #include "Motor.h"
-#include "PID.h"
 using namespace ev3api;
 
 class MotorControl
@@ -18,11 +17,14 @@ class MotorControl
 private:
     Motor* leftMotor;
     Motor* rightMotor;
-    PID* motorPid;
 
 public:
     MotorControl();
     void init();
+    int32_t getLMotorAngle();
+    int32_t getRMotorAngle();
+    void setPWM(int8_t pwm_L, int8_t pwm_R);
+    void stop();
     // void 走行する();
 
 };

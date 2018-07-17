@@ -34,5 +34,9 @@ public:
     InstrumentPanel();
     int pushButton();
     void init();
+    int32_t getGyro();
+    int getTotalRGB();
+    void bt_task();
+    void stop();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

@@ -26,6 +26,7 @@ public:
     TailControl();
     void init();
     void setControl(int angle);
+    void stop();
     // void 設定する(int 目標角);
     // void 制御する();
 

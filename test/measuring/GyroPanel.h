@@ -21,6 +21,7 @@ private:
 public:
     GyroPanel();
     void init();
+    int32_t getGyro();
     // void getGyro();
 
 };

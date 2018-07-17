@@ -28,3 +28,19 @@ void Runner::start() {
     cm->wheelInit();
     cm->balancerInit();
 }
+
+void Runner::run() {
+    int totalRGB = inspanel->getTotalRGB();
+    cm->running(80, 0, 3, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
+    if (totalRGB <= 7) {
+        ev3_led_set_color(LED_RED);
+        wup_tsk(MAIN_TASK);
+        ev3_stp_cyc(CYC_HANDLER);
+        cm->stop();
+        inspanel->stop();
+    }
+}
+
+void Runner::bt_task() {
+    inspanel->bt_task();
+}

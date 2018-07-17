@@ -10,6 +10,7 @@
 #define MEASURING_START_SWITCH_H
 
 #include "TouchSensor.h"
+#include "ev3api.h"
 // #include "ev3api/BluetoothTask.h"
 
 using namespace ev3api;
@@ -17,12 +18,16 @@ using namespace ev3api;
 class StartSwitch
 {
 private:
+    int32_t bt_cmd = 0;
+    FILE *bt = NULL;
     TouchSensor* touchSensor;
     // ev3api::BluetoothTask bluetoothTask;
 
 public:
     StartSwitch();
     int pushButton();
+    void bt_task();
+    void btStop();
     // bool 値を取得();
 
 };

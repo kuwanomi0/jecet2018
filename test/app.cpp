@@ -35,6 +35,7 @@ Driver* driver;
 //*****************************************************************************
 void main_task(intptr_t unused)
 {
+    char buf[64];
     driver = new Driver();
 
     // bt = ev3_serial_open_file(EV3_SERIAL_BT);
@@ -42,7 +43,13 @@ void main_task(intptr_t unused)
 
     act_tsk(BT_TASK);
 
-    driver->exec();
+    driver->start();
+
+    ER er = ev3_sta_cyc(CYC_HANDLER);   //周期ハンドラを起動
+    sprintf(buf, "main_task: error_code=%d", MERCD(er) );   // APIのエラーコードの表示
+    //ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT*1);     // の仕方です。
+
+    slp_tsk();
 
     // ter_tsk(BT_TASK);
     // fclose(bt);
@@ -58,7 +65,7 @@ void main_task(intptr_t unused)
 //*****************************************************************************
 void controller_task(intptr_t unused)
 {
-    driver->funk();
+    driver->exec();
 }
 
 //*****************************************************************************
@@ -81,26 +88,7 @@ void cyc_handler(intptr_t unused)
 //*****************************************************************************
 void bt_task(intptr_t unused)
 {
-    // while(1)
-    // {
-    //     uint8_t c = fgetc(bt);
-    //     switch(c)
-    //     {
-    //     case '0':
-    //         bt_cmd = 0;
-    //         break;
-    //     case '1':
-    //         bt_cmd = 1;
-    //         break;
-    //     case '6':
-    //         bt_cmd = 6;
-    //         break;
-    //     case '\r':
-    //         bt_cmd = '\r';
-    //         break;
-    //     default:
-    //         break;
-    //     }
-    //     fputc(c, bt); /* エコーバック */
-    // }
+    while(1) {
+        driver->bt_task();
+    }
 }

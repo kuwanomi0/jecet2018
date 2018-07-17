@@ -22,8 +22,9 @@ private:
 
 public:
     Driver();
+    void start();
     void exec();
-    void funk();
+    void bt_task();
     // void 区間を渡す();
 
 };

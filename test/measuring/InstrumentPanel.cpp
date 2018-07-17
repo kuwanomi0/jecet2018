@@ -21,3 +21,19 @@ int InstrumentPanel::pushButton() {
 void InstrumentPanel::init() {
     gp->init();
 }
+
+int32_t InstrumentPanel::getGyro() {
+    return gp->getGyro();
+}
+
+int InstrumentPanel::getTotalRGB() {
+    return color->getTotalRGB();
+}
+
+void InstrumentPanel::bt_task() {
+    sswitch->bt_task();
+}
+
+void InstrumentPanel::stop() {
+    sswitch->btStop();
+}
