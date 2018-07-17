@@ -20,5 +20,11 @@ void Runner::start() {
     cm->tailInit();
     while (1) {
         cm->running(0, 0, 94);
+        if (inspanel->pushButton()) {
+            break;
+        }
     }
+    inspanel->init();
+    cm->wheelInit();
+    cm->balancerInit();
 }

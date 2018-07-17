@@ -23,6 +23,8 @@ private:
 public:
     ControlManager();
     void tailInit();
+    void wheelInit();
+    void balancerInit();
     void running(int forward, int turn, int angle);
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

@@ -32,6 +32,7 @@ private:
 
 public:
     InstrumentPanel();
-
+    int pushButton();
+    void init();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

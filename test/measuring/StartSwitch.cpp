@@ -9,5 +9,13 @@
 #include "StartSwitch.h"
 
 StartSwitch::StartSwitch() {
-	touchSensor = new TouchSensor(PORT_1);
+    touchSensor = new TouchSensor(PORT_1);
+}
+
+int StartSwitch::pushButton() {
+    int8_t result = 0;
+    if (touchSensor->isPressed()){
+        result = 1;
+    }
+	return result;
 }

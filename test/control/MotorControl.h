@@ -22,6 +22,7 @@ private:
 
 public:
     MotorControl();
+    void init();
     // void 走行する();
 
 };

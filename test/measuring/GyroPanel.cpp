@@ -11,3 +11,7 @@
 GyroPanel::GyroPanel() {
     gyroSensor  = new GyroSensor(PORT_4);
 }
+
+void GyroPanel::init() {
+    gyroSensor->reset();
+}

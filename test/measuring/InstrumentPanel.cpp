@@ -13,3 +13,11 @@ InstrumentPanel::InstrumentPanel() {
     color = new Color();
     sswitch = new StartSwitch();
 }
+
+int InstrumentPanel::pushButton() {
+    return sswitch->pushButton();
+}
+
+void InstrumentPanel::init() {
+    gp->init();
+}

@@ -18,6 +18,14 @@ void ControlManager::tailInit() {
     tc->init();
 }
 
+void ControlManager::wheelInit() {
+    mc->init();
+}
+
+void ControlManager::balancerInit() {
+    balancer->init(2);
+}
+
 void ControlManager::running(int forward, int turn, int angle) {
     tc->setControl(angle);
 }

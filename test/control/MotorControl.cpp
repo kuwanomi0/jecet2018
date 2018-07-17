@@ -13,3 +13,8 @@ MotorControl::MotorControl() {
     rightMotor  = new Motor(PORT_B);
     motorPid    = new PID(0.05F, 0.0F, 1.2F);
 }
+
+void MotorControl::init() {
+    leftMotor->reset();
+    rightMotor->reset();
+}

@@ -22,6 +22,7 @@ private:
 
 public:
     StartSwitch();
+    int pushButton();
     // bool 値を取得();
 
 };

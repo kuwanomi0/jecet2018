@@ -20,6 +20,7 @@ private:
 
 public:
     GyroPanel();
+    void init();
     // void getGyro();
 
 };
