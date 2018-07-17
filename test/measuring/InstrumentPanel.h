@@ -9,24 +9,29 @@
 #ifndef MEASURING_INSTRUMENT_PANEL_H
 #define MEASURING_INSTRUMENT_PANEL_H
 
-#include "measuring/RunningDistance.h"
-#include "measuring/Color.h"
-#include "measuring/ImpactSensor.h"
-#include "measuring/SonerDistance.h"
-#include "measuring/RunningTime.h"
+#include "GyroPanel.h"
+#include "Color.h"
+#include "StartSwitch.h"
+// #include "measuring/RunningDistance.h"
+// #include "measuring/ImpactSensor.h"
+// #include "measuring/SonerDistance.h"
+// #include "measuring/RunningTime.h"
 
 class InstrumentPanel
 {
 private:
-    RunningDistance distance;
-    Color color;
-    ImpactSensor impact;
-    SonerDistance sonar;
-    RunningTime time;
-    Color color;
+    GyroPanel* gp;
+    Color* color;
+    StartSwitch* sswitch;
+    // RunningDistance distance;
+    // Color color;
+    // ImpactSensor impact;
+    // SonerDistance sonar;
+    // RunningTime time;
+    // Color color;
 
 public:
-
+    InstrumentPanel();
 
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

@@ -1,16 +1,13 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : StartSwitch.cpp
+ ** クラス名   : StartSwitch
+ **
+ ** 概要 : タッチセンサーの確認をするクラス
+ ******************************************************************************
+ **/
 #include "StartSwitch.h"
 
-namespace measuring
-{
-
-bool StartSwitch::値を取得()
-{
-	return false;
+StartSwitch::StartSwitch() {
+	touchSensor = new TouchSensor(PORT_1);
 }
-}  // namespace measuring

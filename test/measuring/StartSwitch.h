@@ -9,17 +9,20 @@
 #ifndef MEASURING_START_SWITCH_H
 #define MEASURING_START_SWITCH_H
 
-#include "ev3api/TouchSensor.h"
-#include "ev3api/BluetoothTask.h"
+#include "TouchSensor.h"
+// #include "ev3api/BluetoothTask.h"
+
+using namespace ev3api;
 
 class StartSwitch
 {
 private:
-    ev3api::TouchSensor touchSensor;
-    ev3api::BluetoothTask bluetoothTask;
+    TouchSensor* touchSensor;
+    // ev3api::BluetoothTask bluetoothTask;
 
 public:
-    bool 値を取得();
+    StartSwitch();
+    // bool 値を取得();
 
 };
 #endif  // MEASURING_START_SWITCH_H

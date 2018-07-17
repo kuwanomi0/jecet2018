@@ -1,15 +1,13 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : GyroPanel.cpp
+ ** クラス名   : GyroPanel
+ **
+ ** 概要 : ジャイロ管理クラス
+ ******************************************************************************
+ **/
 #include "GyroPanel.h"
 
-namespace measuring
-{
-
-void GyroPanel::getGyro()
-{
+GyroPanel::GyroPanel() {
+    gyroSensor  = new GyroSensor(PORT_4);
 }
-}  // namespace measuring

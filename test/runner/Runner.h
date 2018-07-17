@@ -9,16 +9,21 @@
 #ifndef RUNNER_RUNNER_H
 #define RUNNER_RUNNER_H
 
-#include "scenario/シナリオ.h"
-#include "measuring/InstrumentPanel.h"
+// #include "scenario/シナリオ.h"
+#include "../control/ControlManager.h"
+#include "../measuring/InstrumentPanel.h"
 
 class Runner
 {
 private:
-    measuring::InstrumentPanel m;
+    ControlManager* cm;
+    InstrumentPanel* inspanel;
 
 public:
-    void 走る(scenario::シナリオ s);
+    Runner();
+    void exec();
+    void start();
+    // void 走る(scenario::シナリオ s);
 
 };
 #endif  // RUNNER_RUNNER_H

@@ -9,16 +9,22 @@
 #ifndef RUNNER_DRIVER_H
 #define RUNNER_DRIVER_H
 
-#include "scenario/シナリオ.h"
+#include "Runner.h"
+// #include "scenario/シナリオ.h"
 
 class Driver
 {
 private:
-    scenario::シナリオ senarios[];
-    scenario::シナリオ シナリオ;
+    int testc = 0;
+    Runner* runner;
+    // scenario::シナリオ senarios[];
+    // scenario::シナリオ シナリオ;
 
 public:
-    void 区間を渡す();
+    Driver();
+    void exec();
+    void funk();
+    // void 区間を渡す();
 
 };
 #endif  // RUNNER_DRIVER_H

@@ -9,11 +9,20 @@
 #ifndef CONTROL_CONTROL_MANAGER_H
 #define CONTROL_CONTROL_MANAGER_H
 
+#include "BalancerCpp.h"
+#include "MotorControl.h"
+#include "TailControl.h"
+
 class ControlManager
 {
 private:
+    Balancer* balancer;
+    MotorControl* mc;
+    TailControl* tc;
 
 public:
-
+    ControlManager();
+    void tailInit();
+    void running(int forward, int turn, int angle);
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

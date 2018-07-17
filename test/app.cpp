@@ -11,6 +11,8 @@
 #include "ev3api.h"
 #include "app.h"
 
+#include "runner/Driver.h"
+
 #define DEBUG
 
 #ifdef DEBUG
@@ -20,8 +22,10 @@
 #endif
 
 /* Bluetooth */
-static int32_t   bt_cmd = 0;
-static FILE     *bt = NULL;
+// static int32_t   bt_cmd = 0;
+// static FILE     *bt = NULL;
+
+Driver* driver;
 
 //*****************************************************************************
 // 関数名 : main_task
@@ -31,26 +35,17 @@ static FILE     *bt = NULL;
 //*****************************************************************************
 void main_task(intptr_t unused)
 {
-    bt = ev3_serial_open_file(EV3_SERIAL_BT);
-    assert(bt != NULL);
+    driver = new Driver();
+
+    // bt = ev3_serial_open_file(EV3_SERIAL_BT);
+    // assert(bt != NULL);
 
     act_tsk(BT_TASK);
 
-    bt_cmd = 0;
-    while (bt_cmd != 6) {
-        if (bt_cmd == 0) {
-            syslog(LOG_NOTICE, "TRUE\r");
-        }
-        else {
-            syslog(LOG_NOTICE, "FALSE\r");
-        }
-        tslp_tsk(100);
-    }
+    driver->exec();
 
-    syslog(LOG_NOTICE, "END");
-
-    ter_tsk(BT_TASK);
-    fclose(bt);
+    // ter_tsk(BT_TASK);
+    // fclose(bt);
 
     ext_tsk();
 }
@@ -63,6 +58,7 @@ void main_task(intptr_t unused)
 //*****************************************************************************
 void controller_task(intptr_t unused)
 {
+    driver->funk();
 }
 
 //*****************************************************************************
@@ -85,26 +81,26 @@ void cyc_handler(intptr_t unused)
 //*****************************************************************************
 void bt_task(intptr_t unused)
 {
-    while(1)
-    {
-        uint8_t c = fgetc(bt);
-        switch(c)
-        {
-        case '0':
-            bt_cmd = 0;
-            break;
-        case '1':
-            bt_cmd = 1;
-            break;
-        case '6':
-            bt_cmd = 6;
-            break;
-        case '\r':
-            bt_cmd = '\r';
-            break;
-        default:
-            break;
-        }
-        fputc(c, bt); /* エコーバック */
-    }
+    // while(1)
+    // {
+    //     uint8_t c = fgetc(bt);
+    //     switch(c)
+    //     {
+    //     case '0':
+    //         bt_cmd = 0;
+    //         break;
+    //     case '1':
+    //         bt_cmd = 1;
+    //         break;
+    //     case '6':
+    //         bt_cmd = 6;
+    //         break;
+    //     case '\r':
+    //         bt_cmd = '\r';
+    //         break;
+    //     default:
+    //         break;
+    //     }
+    //     fputc(c, bt); /* エコーバック */
+    // }
 }

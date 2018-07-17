@@ -9,20 +9,22 @@
 #ifndef MEASURING_COLOR_H
 #define MEASURING_COLOR_H
 
-#include "ev3api/rgb_raw_t.h"
-#include "ev3api/ColorSensor.h"
+#include "ColorSensor.h"
+
+using namespace ev3api;
 
 class Color
 {
 private:
-    ev3api::rgb_raw_t 前のRGB値;
-    double kLPF;
-    ev3api::ColorSensor colorSensor;
+    ColorSensor* colorSensor;
+    // ev3api::rgb_raw_t 前のRGB値;
+    // double kLPF;
 
 public:
-    ev3api::rgb_raw_t 値を取得する();
-    ev3api::rgb_raw_t LPF値を取得する();
-    boolean 灰色ですか();
+    Color();
+    // ev3api::rgb_raw_t 値を取得する();
+    // ev3api::rgb_raw_t LPF値を取得する();
+    // boolean 灰色ですか();
 
 };
 #endif  // MEASURING_COLOR_H

@@ -9,15 +9,18 @@
 #ifndef MEASURING_GYRO_PANEL_H
 #define MEASURING_GYRO_PANEL_H
 
-#include "ev3api/GyroSensor.h"
+#include "GyroSensor.h"
+
+using namespace ev3api;
 
 class GyroPanel
 {
 private:
-    ev3api::GyroSensor gyroSensor;
+    GyroSensor* gyroSensor;
 
 public:
-    void getGyro();
+    GyroPanel();
+    // void getGyro();
 
 };
 #endif  // MEASURING_GYRO_PANEL_H

@@ -9,19 +9,20 @@
 #ifndef CONTROL_MOTOR_CONTROL_H
 #define CONTROL_MOTOR_CONTROL_H
 
-#include "ev3api/Motor.h"
-#include "control/PID.h"
+#include "Motor.h"
+#include "PID.h"
+using namespace ev3api;
 
 class MotorControl
 {
 private:
-    ev3api::Motor motor;
-    PID pid;
-    ev3api::Motor motor;
-    ev3api::Motor motor;
+    Motor* leftMotor;
+    Motor* rightMotor;
+    PID* motorPid;
 
 public:
-    void 走行する();
+    MotorControl();
+    // void 走行する();
 
 };
 #endif  // CONTROL_MOTOR_CONTROL_H

@@ -1,15 +1,24 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : Runner.cpp
+ ** クラス名   : Runner
+ **
+ ** 概要 : 走行を管理するクラス
+ ******************************************************************************
+ **/
 #include "Runner.h"
 
-namespace runner
-{
-
-void Runner::走る(scenario::シナリオ s)
-{
+Runner::Runner() {
+    cm = new ControlManager();
+    inspanel = new InstrumentPanel();
 }
-}  // namespace runner
+
+void Runner::exec() {
+}
+
+void Runner::start() {
+    cm->tailInit();
+    while (1) {
+        cm->running(0, 0, 94);
+    }
+}

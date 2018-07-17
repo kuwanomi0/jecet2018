@@ -1,13 +1,23 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : ControlManager.cpp
+ ** クラス名   : ControlManager
+ **
+ ** 概要 : 制御を管理するクラス
+ ******************************************************************************
+ **/
 #include "ControlManager.h"
 
-namespace control
-{
+ControlManager::ControlManager() {
+    balancer = new Balancer();
+    mc = new MotorControl();
+    tc = new TailControl();
+}
 
+void ControlManager::tailInit() {
+    tc->init();
+}
 
-}  // namespace control
+void ControlManager::running(int forward, int turn, int angle) {
+    tc->setControl(angle);
+}

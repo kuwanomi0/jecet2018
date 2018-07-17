@@ -9,20 +9,25 @@
 #ifndef CONTROL_TAIL_CONTROL_H
 #define CONTROL_TAIL_CONTROL_H
 
-#include "ev3api/Motor.h"
-#include "control/PID.h"
+#include "Motor.h"
+#include "PID.h"
+
+using namespace ev3api;
 
 class TailControl
 {
 private:
-    int 目標角;
-    ev3api::Motor motor;
-    PID pID;
-    ev3api::Motor motor;
+    const int PWM_ABS_MAX = 60;
+    // int 目標角;
+    Motor* tailMotor;
+    PID* tailPid;
 
 public:
-    void 設定する(int 目標角);
-    void 制御する();
+    TailControl();
+    void init();
+    void setControl(int angle);
+    // void 設定する(int 目標角);
+    // void 制御する();
 
 };
 #endif  // CONTROL_TAIL_CONTROL_H
