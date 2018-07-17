@@ -12,21 +12,20 @@
 #include "ev3api.h"
 
 class Balancer {
-public:
-    Balancer();
-
-    void init(int offset);
-    void update(int angle, int rwEnc, int lwEnc, int battery);
-    void setCommand(int forward, int turn);
-    int8_t getPwmRight();
-    int8_t getPwmLeft();
-
 private:
     int mForward;
     int mTurn;
     int mOffset;
     int8_t mRightPwm;
     int8_t mLeftPwm;
-};
+    
+public:
+    Balancer();
+    void init(int offset);
+    void update(int angle, int rwEnc, int lwEnc, int battery);
+    void setCommand(int forward, int turn);
+    int8_t getPwmRight();
+    int8_t getPwmLeft();
 
+};
 #endif  // EV3_UNIT_BALANCERCPP_H_

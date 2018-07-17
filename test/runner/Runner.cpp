@@ -16,10 +16,10 @@ Runner::Runner() {
 void Runner::exec() {
 }
 
-void Runner::start() {
+void Runner::start(int forward, int turn, int tail) {
     cm->tailInit();
     while (1) {
-        cm->running(0, 0, 94);
+        cm->running(forward, turn, tail);
         if (inspanel->pushButton()) {
             break;
         }
@@ -29,9 +29,9 @@ void Runner::start() {
     cm->balancerInit();
 }
 
-void Runner::run() {
+void Runner::run(int forward, int turn, int tail) {
     int totalRGB = inspanel->getTotalRGB();
-    cm->running(80, 0, 3, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
+    cm->running(forward, turn, tail, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
     if (totalRGB <= 7) {
         ev3_led_set_color(LED_RED);
         wup_tsk(MAIN_TASK);

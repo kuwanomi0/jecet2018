@@ -15,7 +15,6 @@
 class Driver
 {
 private:
-    int testc = 0;
     Runner* runner;
     // scenario::シナリオ senarios[];
     // scenario::シナリオ シナリオ;

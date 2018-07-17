@@ -15,11 +15,17 @@ Driver::Driver() {
 }
 
 void Driver::start() {
-    runner->start();
+    runner->start(0, 0, 95);
 }
 
 void Driver::exec() {
-    runner->run();
+    int forward = 80;
+    int turn = 0;
+    int tail = 5;
+
+
+
+    runner->run(forward, turn, tail);
 }
 
 void Driver::bt_task() {

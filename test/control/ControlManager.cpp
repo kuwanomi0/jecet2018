@@ -27,11 +27,11 @@ void ControlManager::balancerInit() {
     balancer->init(2);
 }
 
-void ControlManager::running(int forward, int turn, int angle) {
-    tc->setControl(angle);
+void ControlManager::running(int forward, int turn, int tailAngle) {
+    tc->setControl(tailAngle);
 }
 
-void ControlManager::running(int forward, int turn, int angle, int32_t gyro, int volt, int totalRGB) {
+void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRGB) {
     turn = motorPid->calcControl(totalRGB - 365) + turn;
     // turn = 30;
     int32_t motor_ang_l = mc->getLMotorAngle();
@@ -39,7 +39,7 @@ void ControlManager::running(int forward, int turn, int angle, int32_t gyro, int
     balancer->setCommand(forward, turn);
     balancer->update(gyro, motor_ang_r, motor_ang_l, volt);
     mc->setPWM(balancer->getPwmLeft(), balancer->getPwmRight());
-    tc->setControl(angle);
+    tc->setControl(tailAngle);
 }
 
 void ControlManager::stop() {

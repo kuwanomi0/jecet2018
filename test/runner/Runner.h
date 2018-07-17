@@ -23,8 +23,8 @@ private:
 public:
     Runner();
     void exec();
-    void start();
-    void run();
+    void start(int forward, int turn, int tail);
+    void run(int forward, int turn, int tail);
     void bt_task();
     // void 走る(scenario::シナリオ s);
 
