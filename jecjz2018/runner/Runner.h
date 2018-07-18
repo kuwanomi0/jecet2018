@@ -26,6 +26,7 @@ public:
     void start(int forward, int turn, int tail);
     void run(int forward, int turn, int tail);
     void bt_task();
+    void setPID(float kp, float ki, float kd);
     // void 走る(scenario::シナリオ s);
 
 };

@@ -18,6 +18,9 @@ class Color
 {
 private:
     rgb_raw_t rgb_level;
+    int rgb_total = 365;
+    int rgb_before;
+    float KLPF = 0.6F;
     ColorSensor* colorSensor;
     // ev3api::rgb_raw_t 前のRGB値;
     // double kLPF;
@@ -25,6 +28,7 @@ private:
 public:
     Color();
     int getTotalRGB();
+    void update();
     // ev3api::rgb_raw_t 値を取得する();
     // ev3api::rgb_raw_t LPF値を取得する();
     // boolean 灰色ですか();

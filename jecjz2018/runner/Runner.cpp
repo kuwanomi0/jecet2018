@@ -30,6 +30,7 @@ void Runner::start(int forward, int turn, int tail) {
 }
 
 void Runner::run(int forward, int turn, int tail) {
+    inspanel->update();
     int totalRGB = inspanel->getTotalRGB();
     cm->running(forward, turn, tail, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
     if (totalRGB <= 7) {
@@ -43,4 +44,8 @@ void Runner::run(int forward, int turn, int tail) {
 
 void Runner::bt_task() {
     inspanel->bt_task();
+}
+
+void Runner::setPID(float kp, float ki, float kd) {
+    cm->setPID(kp, ki, kd);
 }

@@ -38,5 +38,6 @@ public:
     int getTotalRGB();
     void bt_task();
     void stop();
+    void update();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

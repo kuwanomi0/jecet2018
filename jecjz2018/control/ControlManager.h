@@ -30,5 +30,6 @@ public:
     void running(int forward, int turn, int tailAngle);
     void running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRGB);
     void stop();
+    void setPID(float kp, float ki, float kd);
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

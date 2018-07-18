@@ -37,3 +37,7 @@ void InstrumentPanel::bt_task() {
 void InstrumentPanel::stop() {
     sswitch->btStop();
 }
+
+void InstrumentPanel::update() {
+    color->update();
+}

@@ -12,7 +12,7 @@ ControlManager::ControlManager() {
     balancer = new Balancer();
     mc = new MotorControl();
     tc = new TailControl();
-    motorPid    = new PID(0.05F, 0.0F, 1.2F);
+    motorPid    = new PID(0.0F, 0.0F, 0.0F);
 }
 
 void ControlManager::tailInit() {
@@ -45,4 +45,8 @@ void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro,
 void ControlManager::stop() {
     mc->stop();
     tc->stop();
+}
+
+void ControlManager::setPID(float kp, float ki, float kd) {
+    motorPid->setPID(kp, ki, kd);
 }

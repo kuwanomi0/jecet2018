@@ -9,10 +9,15 @@
 #include "Color.h"
 
 Color::Color() {
-	colorSensor = new ColorSensor(PORT_3);
+    colorSensor = new ColorSensor(PORT_3);
 }
 
 int Color::getTotalRGB() {
-	colorSensor->getRawColor(rgb_level);
-	return rgb_level.r + rgb_level.g + rgb_level.b;
+    return rgb_total;
+}
+
+void Color::update() {
+    rgb_before = rgb_total;
+    colorSensor->getRawColor(rgb_level);
+    rgb_total = (rgb_level.r + rgb_level.g + rgb_level.b) * KLPF + rgb_before * (1 - KLPF);
 }
