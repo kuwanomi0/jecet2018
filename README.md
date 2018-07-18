@@ -18,22 +18,26 @@ ETロボコン2018「苦しんで覚えるJEC」のリポジトリ
     void jecJzRobo();
     ~~~~
   - 変数名
-    - アンダースコアで単語と単語の区切る(スネーク記法)
-    - メンバー変数には最初に`m_`をつける
+    - キャメル記法
+    - メンバー変数には最初に`m`をつける
     ~~~~
     // 例
-    int m_jec_jz_robo;
+    int mJecJzRobo;
     ~~~~
+  - オブジェクト名
+    - キャメル記法
   最終的な例
   ~~~~
   #include "ev3api.h"
+  #include "ColorSensor.h"
 
   class JecRobo
   {
   private:
-    int8_t  m_count;
-    int32_t m_jec_jz;
-    int32_t m_jec_jy;
+    int8_t  mCount;
+    int32_t mJecJz;
+    int32_t mJecJy;
+    ColorSensor* colorSensor;
 
   public:
     void start()
