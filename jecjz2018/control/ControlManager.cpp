@@ -12,7 +12,7 @@ ControlManager::ControlManager() {
     balancer = new Balancer();
     mc = new MotorControl();
     tc = new TailControl();
-    motorPid    = new PID(0.0F, 0.0F, 0.0F);
+    motorPid    = new PID(0.0500F, 0.0000F, 1.2000F);
 }
 
 void ControlManager::tailInit() {
