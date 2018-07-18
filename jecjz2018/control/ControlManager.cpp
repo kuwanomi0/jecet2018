@@ -31,8 +31,8 @@ void ControlManager::running(int forward, int turn, int tailAngle) {
     tc->setControl(tailAngle);
 }
 
-void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRGB) {
-    turn = motorPid->calcControl(totalRGB - 365) + turn;
+void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb) {
+    turn = motorPid->calcControl(totalRgb - 365) + turn;
     // turn = 30;
     int32_t motor_ang_l = mc->getLMotorAngle();
     int32_t motor_ang_r = mc->getRMotorAngle();

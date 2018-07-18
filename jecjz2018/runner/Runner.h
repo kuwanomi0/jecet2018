@@ -23,10 +23,11 @@ private:
 public:
     Runner();
     void exec();
-    void start(int forward, int turn, int tail);
-    void run(int forward, int turn, int tail);
-    void bt_task();
+    void start(int forward, int turn, int tailAngle);
+    void run(int forward, int turn, int tailAngle);
+    void btTask();
     void setPID(float kp, float ki, float kd);
+    int getDistance();
     // void 走る(scenario::シナリオ s);
 
 };

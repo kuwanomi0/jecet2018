@@ -9,20 +9,28 @@
 #ifndef MEASURING_RUNNING_DISTANCE_H
 #define MEASURING_RUNNING_DISTANCE_H
 
-#include "ev3api/Motor.h"
-#include "ev3api/int8_t.h"
+#include "Motor.h"
+
+using namespace ev3api;
 
 class RunningDistance
 {
 private:
-    int 計測開始距離;
-    ev3api::Motor motor;
+    Motor* leftMotor;
+    Motor* rightMotor;
+    const float PAI = 3.141592653589793F;
+    int during_f;     //前回読んでからの距離
+    int all_run_distance;
+    int during_run_distance;
 
 public:
-    void 走行距離を計算する();
-    ev3api::int8_t 走行距離を取得する();
-    void 計測開始();
-    int 計測距離を取得する();
+    RunningDistance();
+    int getRunDistance();                        // 走行距離を取得する
+    // void calcRunDistance(int left, int right);              // 走行距離を計算する
+    // int running_Distance();
+    // void startRunDuring(int left, int right);               // 計測開始
+    // void calcDuringDistance();                              // 計測距離を計算する
+    // int getRunDuring();                                     // 計測距離を取得する
 
 };
 #endif  // MEASURING_RUNNING_DISTANCE_H

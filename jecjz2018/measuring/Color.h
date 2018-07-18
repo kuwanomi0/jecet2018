@@ -17,9 +17,9 @@ using namespace ev3api;
 class Color
 {
 private:
-    rgb_raw_t rgb_level;
-    int rgb_total = 365;
-    int rgb_before;
+    rgb_raw_t mRgbLevel;
+    int mRgbTotal = 365;
+    int mRgbBefore;
     float KLPF = 0.6F;
     ColorSensor* colorSensor;
     // ev3api::rgb_raw_t 前のRGB値;

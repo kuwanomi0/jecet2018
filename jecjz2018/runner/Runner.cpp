@@ -16,10 +16,10 @@ Runner::Runner() {
 void Runner::exec() {
 }
 
-void Runner::start(int forward, int turn, int tail) {
+void Runner::start(int forward, int turn, int tailAngle) {
     cm->tailInit();
     while (1) {
-        cm->running(forward, turn, tail);
+        cm->running(forward, turn, tailAngle);
         if (inspanel->pushButton()) {
             break;
         }
@@ -29,10 +29,10 @@ void Runner::start(int forward, int turn, int tail) {
     cm->balancerInit();
 }
 
-void Runner::run(int forward, int turn, int tail) {
+void Runner::run(int forward, int turn, int tailAngle) {
     inspanel->update();
     int totalRGB = inspanel->getTotalRGB();
-    cm->running(forward, turn, tail, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
+    cm->running(forward, turn, tailAngle, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
     if (totalRGB <= 7) {
         ev3_led_set_color(LED_RED);
         wup_tsk(MAIN_TASK);
@@ -42,10 +42,14 @@ void Runner::run(int forward, int turn, int tail) {
     }
 }
 
-void Runner::bt_task() {
-    inspanel->bt_task();
+void Runner::btTask() {
+    inspanel->btTask();
 }
 
 void Runner::setPID(float kp, float ki, float kd) {
     cm->setPID(kp, ki, kd);
+}
+
+int Runner::getDistance() {
+    return inspanel->getRunDistance();
 }

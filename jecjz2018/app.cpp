@@ -28,12 +28,12 @@
 Driver* driver;
 
 //*****************************************************************************
-// 関数名 : main_task
+// 関数名 : mainTask
 // 引数   : 拡張情報
 // 返り値 : なし
 // 概要   : メインタスク
 //*****************************************************************************
-void main_task(intptr_t unused)
+void mainTask(intptr_t unused)
 {
     char buf[64];
     driver = new Driver();
@@ -58,12 +58,12 @@ void main_task(intptr_t unused)
 }
 
 //*****************************************************************************
-// 関数名 : controller_task
+// 関数名 : controllerTask
 // 引数   : 拡張情報
 // 返り値 : なし
 // 概要   : コントローラータスク
 //*****************************************************************************
-void controller_task(intptr_t unused)
+void controllerTask(intptr_t unused)
 {
     driver->exec();
 }
@@ -74,7 +74,7 @@ void controller_task(intptr_t unused)
 // 返り値 : なし
 // 概要   : 周期ハンドラ(4ms)
 //*****************************************************************************
-void cyc_handler(intptr_t unused)
+void cycHandler(intptr_t unused)
 {
     act_tsk(CONTROLLER_TASK);
 }
@@ -86,9 +86,9 @@ void cyc_handler(intptr_t unused)
 // 概要 : Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
 //       ASCIIコードで1を送信すると、リモートスタートする。
 //*****************************************************************************
-void bt_task(intptr_t unused)
+void btTask(intptr_t unused)
 {
     while(1) {
-        driver->bt_task();
+        driver->btTask();
     }
 }

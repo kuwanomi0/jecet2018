@@ -19,16 +19,13 @@ void Driver::start() {
 }
 
 void Driver::exec() {
-    int forward = 80;
-    int turn = 0;
-    int tail = 5;
-
-
-
-    runner->setPID(0.0F, 0.0F, 0.0F);
-    runner->run(forward, turn, tail);
+    if (runner->getDistance() >= course[courseNumber].getDis()) {
+        courseNumber++;
+    }
+    runner->setPID(course[courseNumber].getP(), course[courseNumber].getI(), course[courseNumber].getD());
+    runner->run(course[courseNumber].getForward(), course[courseNumber].getTurn(), course[courseNumber].getTailAngle());
 }
 
-void Driver::bt_task() {
-    runner->bt_task();
+void Driver::btTask() {
+    runner->btTask();
 }

@@ -11,22 +11,20 @@
 
 #include "TouchSensor.h"
 #include "ev3api.h"
-// #include "ev3api/BluetoothTask.h"
 
 using namespace ev3api;
 
 class StartSwitch
 {
 private:
-    int32_t bt_cmd = 0;
-    FILE *bt = NULL;
     TouchSensor* touchSensor;
-    // ev3api::BluetoothTask bluetoothTask;
+    FILE *bt = NULL;
+    int32_t mBtCmd = 0;
 
 public:
     StartSwitch();
     int pushButton();
-    void bt_task();
+    void btTask();
     void btStop();
     // bool 値を取得();
 

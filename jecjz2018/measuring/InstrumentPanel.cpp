@@ -12,6 +12,7 @@ InstrumentPanel::InstrumentPanel() {
     gp = new GyroPanel();
     color = new Color();
     sswitch = new StartSwitch();
+    runDistance = new RunningDistance();
 }
 
 int InstrumentPanel::pushButton() {
@@ -30,8 +31,8 @@ int InstrumentPanel::getTotalRGB() {
     return color->getTotalRGB();
 }
 
-void InstrumentPanel::bt_task() {
-    sswitch->bt_task();
+void InstrumentPanel::btTask() {
+    sswitch->btTask();
 }
 
 void InstrumentPanel::stop() {
@@ -40,4 +41,8 @@ void InstrumentPanel::stop() {
 
 void InstrumentPanel::update() {
     color->update();
+}
+
+int InstrumentPanel::getRunDistance() {
+    return runDistance->getRunDistance();
 }

@@ -81,10 +81,10 @@ extern "C" {
  */
 #ifndef TOPPERS_MACRO_ONLY
 
-extern void main_task(intptr_t exinf);
-extern void bt_task(intptr_t exinf);
-extern void controller_task(intptr_t exinf);
-extern void cyc_handler(intptr_t exinf);
+extern void mainTask(intptr_t exinf);
+extern void btTask(intptr_t exinf);
+extern void controllerTask(intptr_t exinf);
+extern void cycHandler(intptr_t exinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
 

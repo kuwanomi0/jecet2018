@@ -12,6 +12,7 @@
 #include "GyroPanel.h"
 #include "Color.h"
 #include "StartSwitch.h"
+#include "RunningDistance.h"
 // #include "measuring/RunningDistance.h"
 // #include "measuring/ImpactSensor.h"
 // #include "measuring/SonerDistance.h"
@@ -23,7 +24,7 @@ private:
     GyroPanel* gp;
     Color* color;
     StartSwitch* sswitch;
-    // RunningDistance distance;
+    RunningDistance* runDistance;
     // Color color;
     // ImpactSensor impact;
     // SonerDistance sonar;
@@ -36,8 +37,9 @@ public:
     void init();
     int32_t getGyro();
     int getTotalRGB();
-    void bt_task();
+    void btTask();
     void stop();
     void update();
+    int getRunDistance();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

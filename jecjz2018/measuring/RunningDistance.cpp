@@ -1,29 +1,55 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : RunningDistance.cpp
+ ** クラス名   : RunningDistance
+ **
+ ** 概要 : 走行距離の計算を行うクラス
+ ******************************************************************************
+ **/
 #include "RunningDistance.h"
 
-namespace measuring
-{
+RunningDistance::RunningDistance() {
+    leftMotor   = new Motor(PORT_C);
+    rightMotor  = new Motor(PORT_B);
+}
+//
+// int RunningDistance::running_Distance() {
+//     int result;
+//     RunningDistance distance;
+//     distance.CalcRunDistance;
+//     result = distance.GetRunDistance;
+//     return result;
+// }
+//
 
-ev3api::int8_t RunningDistance::走行距離を取得する()
-{
-	return 0;
+// int RunningDistance::getRunDistance() {
+//     return all_run_distance;
+// }
+
+int RunningDistance::getRunDistance() {
+    float leftDistance = 101.2 * PAI * leftMotor->getCount() / 360;
+    float rightDistance = 101.2 * PAI * rightMotor->getCount() / 360;
+    return (leftDistance + rightDistance) / 2;
 }
 
-void RunningDistance::走行距離を計算する()
-{
-}
-
-void RunningDistance::計測開始()
-{
-}
-
-int RunningDistance::計測距離を取得する()
-{
-	return 0;
-}
-}  // namespace measuring
+//
+// void RunningDistance::calcRunDistance(int left, int right)
+// {
+//     float leftdistance = 101.2 * PAI * left / 360;
+//     float rightdistance = 101.2 * PAI * right / 360;
+//     all_run_distance = (leftdistance + rightdistance) / 2;
+// }
+//
+// void RunningDistance::startRunDuring(int left, int right)
+// {
+//     float leftdistance = 101.2 * PAI * left / 360;
+//     float rightdistance = 101.2 * PAI * right / 360;
+//     during_f = (leftdistance + rightdistance) / 2;
+// }
+// void RunningDistance::calcDuringDistance() {
+//
+// }
+// int RunningDistance::getRunDuring()
+// {
+//     return during_f;
+// }

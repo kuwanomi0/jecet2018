@@ -11,11 +11,11 @@
 #define LIMIT   100.0 /* 最大最小の制限 */
 
 /* PID制御計算メソッド */
-int PID::calcControl(int now_value) {
-    float p_control, i_control, d_control, total;
+int PID::calcControl(int nowValue) {
+    float pControl, iControl, dControl, total;
 
     diff[0]   = diff[1];
-    diff[1]   = now_value;
+    diff[1]   = nowValue;
     if(diff[0] == diff[1]){
         integral = 0.0F;
     }
@@ -23,11 +23,11 @@ int PID::calcControl(int now_value) {
         integral += (diff[1] + diff[0]) / 2.0;
     }
 
-    p_control = kp * diff[1];
-    i_control = ki * integral;
-    d_control = kd * (diff[1] - diff[0]);
+    pControl = kp * diff[1];
+    iControl = ki * integral;
+    dControl = kd * (diff[1] - diff[0]);
 
-    total = p_control + i_control + d_control;
+    total = pControl + iControl + dControl;
 
     /* 飽和処理 */
     if (total > LIMIT) {

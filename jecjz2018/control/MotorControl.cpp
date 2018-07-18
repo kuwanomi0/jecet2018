@@ -26,19 +26,19 @@ int32_t MotorControl::getRMotorAngle() {
     return rightMotor->getCount();
 }
 
-void MotorControl::setPWM(int8_t pwm_L, int8_t pwm_R) {
-    if (pwm_L == 0) {
+void MotorControl::setPWM(int8_t pwmL, int8_t pwmR) {
+    if (pwmL == 0) {
          leftMotor->stop();
     }
     else {
-        leftMotor->setPWM(pwm_L);
+        leftMotor->setPWM(pwmL);
     }
 
-    if (pwm_R == 0) {
+    if (pwmR == 0) {
          rightMotor->stop();
     }
     else {
-        rightMotor->setPWM(pwm_R);
+        rightMotor->setPWM(pwmR);
     }
 }
 

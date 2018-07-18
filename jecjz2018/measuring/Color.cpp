@@ -13,11 +13,11 @@ Color::Color() {
 }
 
 int Color::getTotalRGB() {
-    return rgb_total;
+    return mRgbTotal;
 }
 
 void Color::update() {
-    rgb_before = rgb_total;
-    colorSensor->getRawColor(rgb_level);
-    rgb_total = (rgb_level.r + rgb_level.g + rgb_level.b) * KLPF + rgb_before * (1 - KLPF);
+    mRgbBefore = mRgbTotal;
+    colorSensor->getRawColor(mRgbLevel);
+    mRgbTotal = (mRgbLevel.r + mRgbLevel.g + mRgbLevel.b) * KLPF + mRgbBefore * (1 - KLPF);
 }
