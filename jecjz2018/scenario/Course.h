@@ -19,12 +19,13 @@ private:
     float kp;       /* 係数P */
     float ki;       /* 係数I */
     float kd;       /* 係数D */
+    int balanceOn;
 
 public:
-    Course(int dis, int forward, int turn, int tailAngle, float kp, float ki, float kd) {
-        setCourse(dis, forward, turn, tailAngle, kp, ki, kd);
+    Course(int dis, int forward, int turn, int tailAngle, float kp, float ki, float kd, int balanceOn) {
+        setCourse(dis, forward, turn, tailAngle, kp, ki, kd, balanceOn);
     }
-    void setCourse(int dis, int forward, int turn, int tailAngle, float kp, float ki, float kd) {
+    void setCourse(int dis, int forward, int turn, int tailAngle, float kp, float ki, float kd, int balanceOn) {
         this->dis = dis;
         this->forward = forward;
         this->turn = turn;
@@ -32,6 +33,7 @@ public:
         this->kp = kp;
         this->ki = ki;
         this->kd = kd;
+        this->balanceOn = balanceOn;
     }
     int getDis() {
         return dis;
@@ -53,6 +55,9 @@ public:
     }
     float getD() {
         return kd;
+    }
+    int getBalanceOn() {
+        return balanceOn;
     }
     void setForward(int forward) {
         this->forward = forward;

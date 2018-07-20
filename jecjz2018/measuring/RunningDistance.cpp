@@ -27,8 +27,8 @@ RunningDistance::RunningDistance() {
 // }
 
 int RunningDistance::getRunDistance() {
-    float leftDistance = 101.2 * PAI * leftMotor->getCount() / 360;
-    float rightDistance = 101.2 * PAI * rightMotor->getCount() / 360;
+    float leftDistance = 100.8 * PAI * leftMotor->getCount() / 360;
+    float rightDistance = 100.8 * PAI * rightMotor->getCount() / 360;
     return (leftDistance + rightDistance) / 2;
 }
 

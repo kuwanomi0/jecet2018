@@ -29,6 +29,7 @@ public:
     void balancerInit();
     void running(int forward, int turn, int tailAngle);
     void running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb);
+    void noBalanceRun(int forward, int turn, int tailAngle, int totalRgb);
     void stop();
     void setPID(float kp, float ki, float kd);
 };

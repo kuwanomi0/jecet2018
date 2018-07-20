@@ -2,6 +2,9 @@ jecet2018a
 ====
 ETロボコン2018「苦しんで覚えるJEC」のリポジトリ
 
+#### モデルについて
+GoogleDriveで管理しています  https://drive.google.com/drive/folders/1Eer4xp2JzLclUbqO4qx5ejZr96So9AWI
+
 #### コーディングルール
   - クラス名
     - 単語の一文字目を大文字にして連結(パスカル記法)

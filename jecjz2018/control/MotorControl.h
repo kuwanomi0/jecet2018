@@ -10,6 +10,7 @@
 #define CONTROL_MOTOR_CONTROL_H
 
 #include "Motor.h"
+#include "Steering.h"
 
 using namespace ev3api;
 
@@ -18,6 +19,7 @@ class MotorControl
 private:
     Motor* leftMotor;
     Motor* rightMotor;
+    Steering* steering;
 
 public:
     MotorControl();
@@ -26,6 +28,7 @@ public:
     int32_t getRMotorAngle();
     void setPWM(int8_t pwmL, int8_t pwmR);
     void stop();
+    void setNoBalanceRunParameter(int forward, int turn);
     // void 走行する();
 
 };

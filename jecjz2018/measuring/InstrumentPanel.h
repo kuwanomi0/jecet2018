@@ -41,5 +41,6 @@ public:
     void stop();
     void update();
     int getRunDistance();
+    int getBtCmd();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

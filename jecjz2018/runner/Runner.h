@@ -19,6 +19,7 @@ class Runner
 private:
     ControlManager* cm;
     InstrumentPanel* inspanel;
+    int balanceOn = 0;
 
 public:
     Runner();
@@ -28,6 +29,8 @@ public:
     void btTask();
     void setPID(float kp, float ki, float kd);
     int getDistance();
+    void setBalanceOn(int balanceOn);
+    int getBtCmd();
     // void 走る(scenario::シナリオ s);
 
 };

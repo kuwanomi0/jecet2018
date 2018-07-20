@@ -18,7 +18,7 @@ StartSwitch::StartSwitch() {
 int StartSwitch::pushButton() {
     int8_t result = 0;
     Clock clock;
-    if (touchSensor->isPressed() || mBtCmd == 1) {
+    if (touchSensor->isPressed() || mBtCmd == 1 || mBtCmd == 2) {
         result = 1;
     }
 
@@ -36,6 +36,9 @@ void StartSwitch::btTask() {
         case '1':
             mBtCmd = 1;
             break;
+        case '2':
+            mBtCmd = 2;
+            break;
         case '6':
             mBtCmd = 6;
             break;
@@ -51,4 +54,12 @@ void StartSwitch::btTask() {
 void StartSwitch::btStop() {
     ter_tsk(BT_TASK);
     fclose(bt);
+}
+
+int StartSwitch::getBtCmd() {
+    return mBtCmd;
+}
+
+void StartSwitch::setBtCmd(int mBtCmd) {
+    this->mBtCmd = mBtCmd;
 }

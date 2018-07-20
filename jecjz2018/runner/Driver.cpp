@@ -16,16 +16,24 @@ Driver::Driver() {
 
 void Driver::start() {
     runner->start(0, 0, 95);
+    if (runner->getBtCmd() == 1) {
+        mCourse = lCourse;
+    }
+    else if (runner->getBtCmd() == 2) {
+        mCourse = rCourse;
+    }
+
 }
 
 void Driver::exec() {
-    if (runner->getDistance() >= course[courseNumber].getDis()) {
+    if (runner->getDistance() >= mCourse[courseNumber].getDis()) {
         courseNumber++;
-        runner->setPID(course[courseNumber].getP(), course[courseNumber].getI(), course[courseNumber].getD());
+        runner->setBalanceOn(mCourse[courseNumber].getBalanceOn());
+        runner->setPID(mCourse[courseNumber].getP(), mCourse[courseNumber].getI(), mCourse[courseNumber].getD());
     }
     // runner->setPID(0.0500F, 0.0000F, 1.2000F);
     // runner->run(90, 0, 5);
-    runner->run(course[courseNumber].getForward(), course[courseNumber].getTurn(), course[courseNumber].getTailAngle());
+    runner->run(mCourse[courseNumber].getForward(), mCourse[courseNumber].getTurn(), mCourse[courseNumber].getTailAngle());
 }
 
 void Driver::btTask() {

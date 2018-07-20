@@ -19,13 +19,16 @@ class StartSwitch
 private:
     TouchSensor* touchSensor;
     FILE *bt = NULL;
-    int32_t mBtCmd = 0;
+    int mBtCmd = 0;
 
 public:
     StartSwitch();
     int pushButton();
     void btTask();
     void btStop();
+    int getBtCmd();
+    void setBtCmd(int mBtCmd);
+
     // bool 値を取得();
 
 };
