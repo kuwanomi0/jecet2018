@@ -12,6 +12,16 @@ Color::Color() {
     colorSensor = new ColorSensor(PORT_3);
 }
 
+int Color::getRed() {
+    return mRgbLevel.r;
+}
+int Color::getGreen() {
+    return mRgbLevel.g;
+}
+int Color::getBrue() {
+    return mRgbLevel.b;
+}
+
 int Color::getTotalRGB() {
     return mRgbTotal;
 }

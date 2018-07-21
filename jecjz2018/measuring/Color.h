@@ -22,11 +22,12 @@ private:
     int mRgbBefore;
     float KLPF = 0.6F;
     ColorSensor* colorSensor;
-    // ev3api::rgb_raw_t 前のRGB値;
-    // double kLPF;
 
 public:
     Color();
+    int getRed();
+    int getGreen();
+    int getBrue();
     int getTotalRGB();
     void update();
     // ev3api::rgb_raw_t 値を取得する();

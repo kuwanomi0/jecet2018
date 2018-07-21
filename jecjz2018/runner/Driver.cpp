@@ -22,6 +22,9 @@ void Driver::start() {
     else if (runner->getBtCmd() == 2) {
         mCourse = rCourse;
     }
+    else {
+        mCourse = dCourse;
+    }
 
 }
 

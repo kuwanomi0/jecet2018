@@ -16,6 +16,11 @@ InstrumentPanel::InstrumentPanel() {
 }
 
 int InstrumentPanel::pushButton() {
+    if (sswitch->getBtCmd() == '\r') {
+        color->update();
+        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue());
+        sswitch->setBtCmd(0);
+    }
     return sswitch->pushButton();
 }
 
@@ -41,10 +46,10 @@ void InstrumentPanel::stop() {
 
 void InstrumentPanel::update() {
     color->update();
-        syslog(LOG_NOTICE, "RGB%3d\r", color->getTotalRGB());
-        // if (sswitch->getBtCmd() == 3) {
-        // sswitch->setBtCmd(0);
-    // }
+    if (sswitch->getBtCmd() == '\r') {
+        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue());
+        sswitch->setBtCmd(0);
+    }
 }
 
 int InstrumentPanel::getRunDistance() {
