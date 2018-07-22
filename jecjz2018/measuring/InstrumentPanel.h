@@ -13,9 +13,9 @@
 #include "Color.h"
 #include "StartSwitch.h"
 #include "RunningDistance.h"
+#include "SonarDistance.h"
 // #include "measuring/RunningDistance.h"
 // #include "measuring/ImpactSensor.h"
-// #include "measuring/SonerDistance.h"
 // #include "measuring/RunningTime.h"
 
 class InstrumentPanel
@@ -25,9 +25,9 @@ private:
     Color* color;
     StartSwitch* sswitch;
     RunningDistance* runDistance;
+    SonarDistance* sonarDistance;
     // Color color;
     // ImpactSensor impact;
-    // SonerDistance sonar;
     // RunningTime time;
     // Color color;
 
@@ -42,5 +42,6 @@ public:
     void update();
     int getRunDistance();
     int getBtCmd();
+    int32_t getSonarAlert();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

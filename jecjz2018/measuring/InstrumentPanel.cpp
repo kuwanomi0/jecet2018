@@ -13,6 +13,7 @@ InstrumentPanel::InstrumentPanel() {
     color = new Color();
     sswitch = new StartSwitch();
     runDistance = new RunningDistance();
+    sonarDistance = new SonarDistance();
 }
 
 int InstrumentPanel::pushButton() {
@@ -59,4 +60,8 @@ int InstrumentPanel::getRunDistance() {
 
 int InstrumentPanel::getBtCmd() {
     return sswitch->getBtCmd();
+}
+
+int32_t InstrumentPanel::getSonarAlert() {
+    return sonarDistance->alert();
 }

@@ -21,14 +21,14 @@ private:
 public:
     PID(float pValue,float iValue ,float dValue) {
         setPID(pValue, iValue, dValue);
-        diff[1] = 0;
-        integral = 0.0;
     }
     int calcControl(int nowValue);
     void setPID(float pValue,float iValue ,float dValue) {
         kp = pValue; /*比例定数*/
         ki = iValue; /*積分定数*/
         kd = dValue; /*微分定数*/
+        diff[1] = 0;
+        integral = 0.0;
     }
 
 };

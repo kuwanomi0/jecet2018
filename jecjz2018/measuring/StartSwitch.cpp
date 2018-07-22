@@ -46,6 +46,7 @@ void StartSwitch::btTask() {
             mBtCmd = 6;
             break;
         case '\r':
+        case '9':
             mBtCmd = '\r';
             break;
         default:
