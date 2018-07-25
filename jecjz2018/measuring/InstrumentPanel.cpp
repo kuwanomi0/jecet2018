@@ -14,12 +14,13 @@ InstrumentPanel::InstrumentPanel() {
     sswitch = new StartSwitch();
     runDistance = new RunningDistance();
     sonarDistance = new SonarDistance();
+    runningTime = new RunningTime();
 }
 
 int InstrumentPanel::pushButton() {
     if (sswitch->getBtCmd() == '\r') {
         color->update();
-        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue());
+        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d\r", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue(), getSonarAlert());
         sswitch->setBtCmd(0);
     }
     return sswitch->pushButton();
@@ -62,6 +63,6 @@ int InstrumentPanel::getBtCmd() {
     return sswitch->getBtCmd();
 }
 
-int32_t InstrumentPanel::getSonarAlert() {
+int InstrumentPanel::getSonarAlert() {
     return sonarDistance->alert();
 }

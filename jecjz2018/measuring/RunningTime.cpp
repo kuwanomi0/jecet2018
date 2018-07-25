@@ -1,24 +1,13 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : RunningTime.cpp
+ ** クラス名   : RunningTime
+ **
+ ** 概要 : 走行時間の計算を行うクラス
+ ******************************************************************************
+ **/
 #include "RunningTime.h"
 
-namespace measuring
-{
-
-int RunningTime::走行時間を取得する()
-{
-	return 0;
+RunningTime::RunningTime() {
+    
 }
-
-void RunningTime::計測開始()
-{
-}
-
-void RunningTime::計測時間を取得する()
-{
-}
-}  // namespace measuring

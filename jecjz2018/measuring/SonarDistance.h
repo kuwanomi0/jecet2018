@@ -20,7 +20,7 @@ private:
 
 public:
     SonarDistance();
-    int32_t alert();
+    int alert();
 
 };
 #endif  // MEASURING_SONAR_DISTANCE_H

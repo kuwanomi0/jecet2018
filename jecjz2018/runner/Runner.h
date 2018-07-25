@@ -20,6 +20,9 @@ private:
     ControlManager* cm;
     InstrumentPanel* inspanel;
     int balanceOn = 0;
+    int buttonEnable = 0;
+    int sensen = 0;
+    int sensenC = 0;
 
 public:
     Runner();

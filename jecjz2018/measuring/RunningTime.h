@@ -9,18 +9,20 @@
 #ifndef MEASURING_RUNNING_TIME_H
 #define MEASURING_RUNNING_TIME_H
 
-#include "ev3api/Clock.h"
+#include "Clock.h"
 
-class RunningTime
+using namespace ev3api;
+
+class RunningTime : public  Clock
 {
 private:
-	int 計測開始時間;
-	ev3api::Clock clock;
+    // Clock clock;
 
 public:
-	int 走行時間を取得する();
-	void 計測開始();
-	void 計測時間を取得する();
+    RunningTime();
+	// int 走行時間を取得する();
+	// void 計測開始();
+	// void 計測時間を取得する();
 
 };
 #endif  // MEASURING_RUNNING_TIME_H

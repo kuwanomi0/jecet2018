@@ -12,14 +12,14 @@ SonarDistance::SonarDistance() {
     sonarSensor = new SonarSensor(PORT_2);
 }
 
-int32_t SonarDistance::alert() {
+int SonarDistance::alert() {
     static uint32_t counter = 0;
     int32_t alert = 0;
     int32_t distance;
 
     if (++counter == 4/4) {
         distance = sonarSensor->getDistance();
-        if ((distance <= 20) && (distance >= 0)) {
+        if ((distance <= 10) && (distance >= 0)) {
             alert = 1;
         }
         else {
