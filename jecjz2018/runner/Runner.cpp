@@ -40,14 +40,14 @@ void Runner::run(int forward, int turn, int tailAngle) {
     if ((inspanel->getSonarAlert() && sensen == 0) || sensen == 1) {
         sensen = 1;
         balanceOn = 0;
-        forward = 40;
+        forward = -10;
         tailAngle = 70;
         if (sensenC < 200/4) {
             setPID(0.0F,0.0F,0.0F);
             sensenC++;
         }
         else {
-            setPID(0.0300F, 0.0000F, 0.3000F);
+            setPID(0.0300F, 0.0001F, 0.2000F);
         }
         if (getDistance() > 700) {
             sensen = 2;
@@ -69,10 +69,10 @@ void Runner::run(int forward, int turn, int tailAngle) {
     if (sensen == 3) {
         sensen = 3;
         balanceOn = 0;
-        forward = -20;
-        turn = -1;
-        tailAngle = 68;
-        setPID(0.0F,0.0F,0.0F);
+        forward = -10;
+        turn = 0;
+        tailAngle = 65;
+        setPID(0.0300F, 0.0001F, 0.2000F);
         if (getDistance() < 200) {
             sensen = 4;
         }
@@ -81,9 +81,9 @@ void Runner::run(int forward, int turn, int tailAngle) {
     if (sensen == 4) {
         sensen = 4;
         balanceOn = 0;
-        forward = 40;
-        tailAngle = 70;
-                    setPID(0.0300F, 0.0000F, 0.3000F);
+        forward = 10;
+        tailAngle = 68;
+                    setPID(0.0300F, 0.0001F, 0.2000F);
     }
 
     int totalRGB = inspanel->getTotalRGB();

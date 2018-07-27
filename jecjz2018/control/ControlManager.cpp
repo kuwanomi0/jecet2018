@@ -42,7 +42,7 @@ void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro,
 }
 
 void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int totalRgb) {
-    turn = motorPid->calcControl(totalRgb - 100) + turn;
+    turn = motorPid->calcControl(totalRgb - 105) + turn;
     mc->setNoBalanceRunParameter(forward, turn);
     tc->setControl(tailAngle);
 }

@@ -11,7 +11,6 @@
 MotorControl::MotorControl() {
     leftMotor   = new Motor(PORT_C);
     rightMotor  = new Motor(PORT_B);
-    steering    = new Steering(*rightMotor, *leftMotor);
 }
 
 void MotorControl::init() {
@@ -49,5 +48,15 @@ void MotorControl::stop() {
 }
 
 void MotorControl::setNoBalanceRunParameter(int forward, int turn) {
-    steering->setPower(forward, -turn);
+    int pwmL = forward + turn / 2;
+    int pwmR = forward - turn / 2;
+
+    if (pwmL > 100) {
+        pwmL = 100;
+    }
+    if (pwmR > 100) {
+        pwmR = 100;
+    }
+
+    setPWM(pwmL, pwmR);
 }

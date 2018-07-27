@@ -10,7 +10,6 @@
 #define CONTROL_MOTOR_CONTROL_H
 
 #include "Motor.h"
-#include "Steering.h"
 
 using namespace ev3api;
 
@@ -19,7 +18,6 @@ class MotorControl
 private:
     Motor* leftMotor;
     Motor* rightMotor;
-    Steering* steering;
 
 public:
     MotorControl();
