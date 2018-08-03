@@ -26,6 +26,8 @@ private:
     RunningDistance* runDistance;
     SonarDistance* sonarDistance;
     RunningTime* runningTime;
+    int white;
+    int black;
 
     // Color color;
     // ImpactSensor impact;
@@ -34,6 +36,7 @@ private:
 
 public:
     InstrumentPanel();
+    int pushColorButton();
     int pushButton();
     void init();
     int32_t getGyro();
@@ -44,5 +47,6 @@ public:
     int getRunDistance();
     int getBtCmd();
     int getSonarAlert();
+    void setBtCmd(int mBtCmd);
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

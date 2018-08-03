@@ -17,6 +17,27 @@ InstrumentPanel::InstrumentPanel() {
     runningTime = new RunningTime();
 }
 
+int InstrumentPanel::pushColorButton() {
+    int target;
+    if (sswitch->pushColorButton() == 1) {
+        color->update();
+        white = color->getTotalRGB();
+    }
+    if (sswitch->pushColorButton() == 2) {
+        color->update();
+        black = color->getTotalRGB();
+    }
+
+    target = (white + black) / 2;
+
+    if (sswitch->pushColorButton() != 0) {
+        syslog(LOG_NOTICE, "color: %3d   B: %3d   W: %3d\r", target, black, white);
+        sswitch->setBtCmd(0);
+    }
+
+    return target;
+}
+
 int InstrumentPanel::pushButton() {
     if (sswitch->getBtCmd() == '\r') {
         color->update();
@@ -61,6 +82,10 @@ int InstrumentPanel::getRunDistance() {
 
 int InstrumentPanel::getBtCmd() {
     return sswitch->getBtCmd();
+}
+
+void InstrumentPanel::setBtCmd(int btCmd) {
+    sswitch->setBtCmd(btCmd);
 }
 
 int InstrumentPanel::getSonarAlert() {

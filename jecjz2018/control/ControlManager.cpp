@@ -32,7 +32,7 @@ void ControlManager::running(int forward, int turn, int tailAngle) {
 }
 
 void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb) {
-    turn = motorPid->calcControl(totalRgb - 500) + turn;
+    turn = motorPid->calcControl(totalRgb - targetRgb) + turn;
     int32_t motor_ang_l = mc->getLMotorAngle();
     int32_t motor_ang_r = mc->getRMotorAngle();
     balancer->setCommand(forward, turn);
@@ -41,9 +41,18 @@ void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro,
     tc->setControl(tailAngle);
 }
 
-void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int totalRgb) {
-    turn = motorPid->calcControl(totalRgb - 105) + turn;
-    mc->setNoBalanceRunParameter(forward, turn);
+void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb) {
+    turn = motorPid->calcControl(totalRgb - 90) + turn;
+    int32_t motor_ang_l = mc->getLMotorAngle();
+    int32_t motor_ang_r = mc->getRMotorAngle();
+    balancer->setCommand(forward, turn);
+    balancer->update(gyro, motor_ang_r, motor_ang_l, volt);
+    if (forward >= 0) {
+        mc->setNoBalanceRunParameter(forward, turn);
+    }
+    else {
+        mc->setNoBalanceRunParameter(forward, -turn);
+    }
     tc->setControl(tailAngle);
 }
 
@@ -54,4 +63,8 @@ void ControlManager::stop() {
 
 void ControlManager::setPID(float kp, float ki, float kd) {
     motorPid->setPID(kp, ki, kd);
+}
+
+void ControlManager::setTargetRgb(int targetRgb) {
+    this->targetRgb = targetRgb;
 }

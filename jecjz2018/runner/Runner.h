@@ -9,7 +9,6 @@
 #ifndef RUNNER_RUNNER_H
 #define RUNNER_RUNNER_H
 
-// #include "scenario/シナリオ.h"
 #include "ev3api.h"
 #include "../control/ControlManager.h"
 #include "../measuring/InstrumentPanel.h"
@@ -21,8 +20,9 @@ private:
     InstrumentPanel* inspanel;
     int balanceOn = 0;
     int buttonEnable = 0;
-    int sensen = 0;
-    int sensenC = 0;
+    int lookupLine = 0;
+    int lookupLineC = 0;
+    int distanceTmp = 0;
 
 public:
     Runner();
@@ -34,7 +34,7 @@ public:
     int getDistance();
     void setBalanceOn(int balanceOn);
     int getBtCmd();
-    // void 走る(scenario::シナリオ s);
+    void lookupRun(int* forward, int* turn, int* tailAngle);
 
 };
 #endif  // RUNNER_RUNNER_H

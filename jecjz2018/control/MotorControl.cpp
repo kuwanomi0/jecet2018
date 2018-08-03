@@ -48,8 +48,8 @@ void MotorControl::stop() {
 }
 
 void MotorControl::setNoBalanceRunParameter(int forward, int turn) {
-    int pwmL = forward + turn / 2;
-    int pwmR = forward - turn / 2;
+    int pwmL = forward + turn;
+    int pwmR = forward - turn;
 
     if (pwmL > 100) {
         pwmL = 100;

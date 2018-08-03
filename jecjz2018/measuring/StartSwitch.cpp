@@ -7,7 +7,7 @@
  ******************************************************************************
  **/
 #include "StartSwitch.h"
-#include "Clock.h"
+#include "RunningTime.h"
 
 StartSwitch::StartSwitch() {
     touchSensor = new TouchSensor(PORT_1);
@@ -15,14 +15,28 @@ StartSwitch::StartSwitch() {
     assert(bt != NULL);
 }
 
+int StartSwitch::pushColorButton() {
+    int8_t result = 0;
+    RunningTime runTime;
+    if (mBtCmd == 'w') {
+        result = 1;
+    }
+    else if (mBtCmd == 'b') {
+        result = 2;
+    }
+
+    runTime.sleep(1);
+	return result;
+}
+
 int StartSwitch::pushButton() {
     int8_t result = 0;
-    Clock clock;
-    if (touchSensor->isPressed() || mBtCmd != 0) {
+    RunningTime runTime;
+    if (touchSensor->isPressed() || mBtCmd == 1 || mBtCmd == 2 || mBtCmd == 3) {
         result = 1;
     }
 
-    clock.sleep(10);
+    runTime.sleep(10);
 	return result;
 }
 
@@ -44,6 +58,12 @@ void StartSwitch::btTask() {
             break;
         case '6':
             mBtCmd = 6;
+            break;
+        case 'w':
+            mBtCmd = 'w';
+            break;
+        case 'b':
+            mBtCmd = 'b';
             break;
         case '\r':
         case '9':

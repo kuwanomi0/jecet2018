@@ -23,14 +23,16 @@ private:
     PID* motorPid;
 
 public:
+    int targetRgb = 0;
     ControlManager();
     void tailInit();
     void wheelInit();
     void balancerInit();
     void running(int forward, int turn, int tailAngle);
     void running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb);
-    void noBalanceRun(int forward, int turn, int tailAngle, int totalRgb);
+    void noBalanceRun(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb);
     void stop();
     void setPID(float kp, float ki, float kd);
+    void setTargetRgb(int targetRgb);
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

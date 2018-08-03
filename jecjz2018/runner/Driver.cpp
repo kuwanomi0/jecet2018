@@ -25,7 +25,6 @@ void Driver::start() {
     else {
         mCourse = dCourse;
     }
-
 }
 
 void Driver::exec() {

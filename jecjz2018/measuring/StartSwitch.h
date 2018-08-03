@@ -23,6 +23,7 @@ private:
 
 public:
     StartSwitch();
+    int pushColorButton();
     int pushButton();
     void btTask();
     void btStop();
