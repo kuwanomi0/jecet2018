@@ -33,8 +33,6 @@ void Driver::exec() {
         runner->setBalanceOn(mCourse[courseNumber].getBalanceOn());
         runner->setPID(mCourse[courseNumber].getP(), mCourse[courseNumber].getI(), mCourse[courseNumber].getD());
     }
-    // runner->setPID(0.0500F, 0.0000F, 1.2000F);
-    // runner->run(90, 0, 5);
     runner->run(mCourse[courseNumber].getForward(), mCourse[courseNumber].getTurn(), mCourse[courseNumber].getTailAngle());
 }
 

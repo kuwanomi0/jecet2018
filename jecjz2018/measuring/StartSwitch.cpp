@@ -29,6 +29,20 @@ int StartSwitch::pushColorButton() {
 	return result;
 }
 
+int StartSwitch::pushTailButton() {
+    int8_t result = 0;
+    RunningTime runTime;
+    if (mBtCmd == '[') {
+        result = 1;
+    }
+    else if (mBtCmd == ']') {
+        result = 2;
+    }
+
+    runTime.sleep(1);
+	return result;
+}
+
 int StartSwitch::pushButton() {
     int8_t result = 0;
     RunningTime runTime;
@@ -64,6 +78,12 @@ void StartSwitch::btTask() {
             break;
         case 'b':
             mBtCmd = 'b';
+            break;
+        case '[':
+            mBtCmd = '[';
+            break;
+        case ']':
+            mBtCmd = ']';
             break;
         case '\r':
         case '9':

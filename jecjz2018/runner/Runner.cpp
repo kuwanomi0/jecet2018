@@ -19,19 +19,29 @@ void Runner::exec() {
 void Runner::start(int forward, int turn, int tailAngle) {
     cm->tailInit();
     while (1) {
+        int tailTMP = inspanel->pushTailButton();
+
         if (inspanel->getSonarAlert() == 1) {
             ev3_led_set_color(LED_RED);
         }
         else {
             ev3_led_set_color(LED_GREEN);
         }
+
+        if (tailTMP != 0) {
+            tailAngle += tailTMP;
+            syslog(LOG_NOTICE, "TAIL: %3d\r", tailAngle);
+        }
+
         cm->running(forward, turn, tailAngle);
+
         if (inspanel->pushButton()) {
             break;
         }
+
         cm->setTargetRgb(inspanel->pushColorButton());
     }
-    inspanel->init();
+    cm->gyroInit();
     cm->wheelInit();
     cm->balancerInit();
 }
@@ -43,10 +53,10 @@ void Runner::run(int forward, int turn, int tailAngle) {
 
     int totalRGB = inspanel->getTotalRGB();
     if (balanceOn == 1) {
-        cm->running(forward, turn, tailAngle, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
+        cm->running(forward, turn, tailAngle, totalRGB);
     }
     else {
-        cm->noBalanceRun(forward, turn, tailAngle, inspanel->getGyro(), (int)ev3_battery_voltage_mV(), totalRGB);
+        cm->noBalanceRun(forward, turn, tailAngle, totalRGB);
     }
     if (totalRGB <= 7 || inspanel->getBtCmd() == 6) {
         ev3_led_set_color(LED_RED);
@@ -164,7 +174,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
         *forward = 15;
         *tailAngle = 65;
         setPID(0.0000F, 0.0000F, 0.0000F);
-        if (getDistance() - distanceTmp > 935) {
+        if (getDistance() - distanceTmp > 920) {
             lookupLine = 6;
         }
     }

@@ -9,7 +9,6 @@
 #include "InstrumentPanel.h"
 
 InstrumentPanel::InstrumentPanel() {
-    gp = new GyroPanel();
     color = new Color();
     sswitch = new StartSwitch();
     runDistance = new RunningDistance();
@@ -38,21 +37,29 @@ int InstrumentPanel::pushColorButton() {
     return target;
 }
 
+int InstrumentPanel::pushTailButton() {
+    int target = 0;
+    if (sswitch->pushTailButton() == 1) {
+        target = 1;
+    }
+    if (sswitch->pushTailButton() == 2) {
+        target = -1;
+    }
+
+    if (target != 0) {
+        sswitch->setBtCmd(0);
+    }
+
+    return target;
+}
+
 int InstrumentPanel::pushButton() {
     if (sswitch->getBtCmd() == '\r') {
         color->update();
-        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d\r", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue(), getSonarAlert());
+        syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d\r", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue(), getSonarAlert());
         sswitch->setBtCmd(0);
     }
     return sswitch->pushButton();
-}
-
-void InstrumentPanel::init() {
-    gp->init();
-}
-
-int32_t InstrumentPanel::getGyro() {
-    return gp->getGyro();
 }
 
 int InstrumentPanel::getTotalRGB() {
@@ -70,7 +77,7 @@ void InstrumentPanel::stop() {
 void InstrumentPanel::update() {
     color->update();
     if (sswitch->getBtCmd() == '\r') {
-        syslog(LOG_NOTICE, "DIS %5d  GYRO %3d   R:%3d G:%3d B:%3d", runDistance->getRunDistance(), gp->getGyro(), color->getRed(), color->getGreen(), color->getBrue());
+        syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue());
         sswitch->setBtCmd(0);
     }
 }

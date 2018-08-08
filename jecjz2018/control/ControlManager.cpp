@@ -9,10 +9,15 @@
 #include "ControlManager.h"
 
 ControlManager::ControlManager() {
+    gyroSensor = new GyroSensor(PORT_4);
     balancer = new Balancer();
     mc = new MotorControl();
     tc = new TailControl();
-    motorPid    = new PID(0.0500F, 0.0000F, 1.2000F);
+    motorPid = new PID(0.0500F, 0.0000F, 1.2000F);
+}
+
+void ControlManager::gyroInit() {
+    gyroSensor->reset();
 }
 
 void ControlManager::tailInit() {
@@ -31,22 +36,18 @@ void ControlManager::running(int forward, int turn, int tailAngle) {
     tc->setControl(tailAngle);
 }
 
-void ControlManager::running(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb) {
+void ControlManager::running(int forward, int turn, int tailAngle, int totalRgb) {
     turn = motorPid->calcControl(totalRgb - targetRgb) + turn;
-    int32_t motor_ang_l = mc->getLMotorAngle();
-    int32_t motor_ang_r = mc->getRMotorAngle();
     balancer->setCommand(forward, turn);
-    balancer->update(gyro, motor_ang_r, motor_ang_l, volt);
+    balancer->update(gyroSensor->getAnglerVelocity(), mc->getRMotorAngle(), mc->getLMotorAngle(), (int)ev3_battery_voltage_mV());
     mc->setPWM(balancer->getPwmLeft(), balancer->getPwmRight());
     tc->setControl(tailAngle);
 }
 
-void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int32_t gyro, int volt, int totalRgb) {
-    turn = motorPid->calcControl(totalRgb - 90) + turn;
-    int32_t motor_ang_l = mc->getLMotorAngle();
-    int32_t motor_ang_r = mc->getRMotorAngle();
+void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int totalRgb) {
+    turn = motorPid->calcControl(totalRgb - 54) + turn;
     balancer->setCommand(forward, turn);
-    balancer->update(gyro, motor_ang_r, motor_ang_l, volt);
+    balancer->update(gyroSensor->getAnglerVelocity(), mc->getRMotorAngle(), mc->getLMotorAngle(), (int)ev3_battery_voltage_mV());
     if (forward >= 0) {
         mc->setNoBalanceRunParameter(forward, turn);
     }

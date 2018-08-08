@@ -19,7 +19,7 @@ private:
     float kp;       /* 係数P */
     float ki;       /* 係数I */
     float kd;       /* 係数D */
-    int balanceOn;
+    int balanceOn;  /* バランス走行の有無 */
 
 public:
     Course(int dis, int forward, int turn, int tailAngle, float kp, float ki, float kd, int balanceOn) {
