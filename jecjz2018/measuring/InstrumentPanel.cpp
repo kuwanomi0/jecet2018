@@ -13,7 +13,6 @@ InstrumentPanel::InstrumentPanel() {
     sswitch = new StartSwitch();
     runDistance = new RunningDistance();
     sonarDistance = new SonarDistance();
-    runningTime = new RunningTime();
 }
 
 int InstrumentPanel::pushColorButton() {
@@ -66,8 +65,8 @@ int InstrumentPanel::getTotalRGB() {
     return color->getTotalRGB();
 }
 
-void InstrumentPanel::btTask() {
-    sswitch->btTask();
+void InstrumentPanel::btUpdate() {
+    sswitch->btUpdate();
 }
 
 void InstrumentPanel::stop() {

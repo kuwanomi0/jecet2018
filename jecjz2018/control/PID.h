@@ -22,7 +22,6 @@ public:
     PID(float pValue,float iValue ,float dValue) {
         setPID(pValue, iValue, dValue);
     }
-    int calcControl(int nowValue);
     void setPID(float pValue,float iValue ,float dValue) {
         kp = pValue; /*比例定数*/
         ki = iValue; /*積分定数*/
@@ -30,6 +29,7 @@ public:
         diff[1] = 0;
         integral = 0.0;
     }
+    int calcControl(int nowValue);
 
 };
 #endif  // CONTROL_PID_H

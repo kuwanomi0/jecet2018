@@ -26,12 +26,10 @@ public:
     int pushColorButton();
     int pushTailButton();
     int pushButton();
-    void btTask();
+    void btUpdate();
     void btStop();
     int getBtCmd();
     void setBtCmd(int mBtCmd);
-
-    // bool 値を取得();
 
 };
 #endif  // MEASURING_START_SWITCH_H

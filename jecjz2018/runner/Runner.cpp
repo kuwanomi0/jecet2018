@@ -8,14 +8,22 @@
  **/
 #include "Runner.h"
 
+/**
+ * 関数名 : Runner
+ * 引数   : なし
+ * 概要   : コンストラクタ
+ */
 Runner::Runner() {
     cm = new ControlManager();
     inspanel = new InstrumentPanel();
 }
 
-void Runner::exec() {
-}
-
+/**
+ * 関数名 : start
+ * 引数   : int forward, int turn, int tailAngle
+ * 返り値 : なし
+ * 概要   : スタート待機の処理をする
+ */
 void Runner::start(int forward, int turn, int tailAngle) {
     cm->tailInit();
     while (1) {
@@ -46,13 +54,19 @@ void Runner::start(int forward, int turn, int tailAngle) {
     cm->balancerInit();
 }
 
+/**
+ * 関数名 : run
+ * 引数   : int forward, int turn, int tailAngle
+ * 返り値 : なし
+ * 概要   : 走行の処理をする
+ */
 void Runner::run(int forward, int turn, int tailAngle) {
     inspanel->update();
 
     lookupRun(&forward, &turn, &tailAngle);
 
     int totalRGB = inspanel->getTotalRGB();
-    if (balanceOn == 1) {
+    if (style == 1) {
         cm->running(forward, turn, tailAngle, totalRGB);
     }
     else {
@@ -67,26 +81,63 @@ void Runner::run(int forward, int turn, int tailAngle) {
     }
 }
 
-void Runner::btTask() {
-    inspanel->btTask();
+/**
+ * 関数名 : btUpdate
+ * 引数   : なし
+ * 返り値 : なし
+ * 概要   : Bluetoothからの情報を更新する
+ */
+void Runner::btUpdate() {
+    inspanel->btUpdate();
 }
 
-void Runner::setPID(float kp, float ki, float kd) {
-    cm->setPID(kp, ki, kd);
-}
-
+/**
+ * 関数名 : getDistance
+ * 引数   : なし
+ * 返り値 : int 走行距離
+ * 概要   : 現在の走行距離を取得する
+ */
 int Runner::getDistance() {
     return inspanel->getRunDistance();
 }
 
-void Runner::setBalanceOn(int balanceOn) {
-    this->balanceOn = balanceOn;
-}
-
+/**
+ * 関数名 : getBtCmd
+ * 引数   : なし
+ * 返り値 : int BTコマンド
+ * 概要   : 現在のBTコマンド値を取得する
+ */
 int Runner::getBtCmd() {
     return inspanel->getBtCmd();
 }
 
+/**
+ * 関数名 : setPID
+ * 引数   : float kp, float ki, float kd
+ * 返り値 : なし
+ * 概要   : ライントレースに必要なPID係数を設定する
+ */
+void Runner::setPID(float kp, float ki, float kd) {
+    cm->setPID(kp, ki, kd);
+}
+
+/**
+ * 関数名 : setStyle
+ * 引数   : int getStyle
+ * 返り値 : なし
+ * 概要   : 走行方法を設定する
+ */
+void Runner::setStyle(int style) {
+    this->style = style;
+}
+
+/**
+ * 関数名 : lookupRun
+ * 引数   : int* forward, int* turn, int* tailAngle
+ * 返り値 : なし
+ * 概要   : ルックアップに必要な走行情報にアドレスに直に書き換える
+ * TODO   : このメソッドは配列などにできると思うのでもう少し改良を行う
+ */
 void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
     if (lookupLine == 0) {
         distanceTmp = getDistance();
@@ -94,7 +145,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
 
     if ((inspanel->getSonarAlert() && lookupLine == 0) || lookupLine == 1) {
         lookupLine = 1;
-        balanceOn = 0;
+        style = 0;
         *tailAngle = 65;
         if (lookupLineC < 100/4) {
             *forward = 30;
@@ -119,7 +170,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
     if (lookupLine == 2) {
         lookupLine = 2;
         lookupLineC++;
-        balanceOn = 0;
+        style = 0;
         *forward = 0;
         *tailAngle = 65;
         setPID(0.0F,0.0F,0.0F);
@@ -130,7 +181,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
 
     if (lookupLine == 3) {
         lookupLine = 3;
-        balanceOn = 0;
+        style = 0;
         *forward = -30;
         *turn = 0;
         *tailAngle = 65;
@@ -149,7 +200,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
     if (lookupLine == 44) {
         lookupLine = 44;
         lookupLineC++;
-        balanceOn = 0;
+        style = 0;
         *forward = 0;
         *tailAngle = 65;
         setPID(0.0F,0.0F,0.0F);
@@ -160,7 +211,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
 
     if (lookupLine == 4) {
         lookupLine = 4;
-        balanceOn = 0;
+        style = 0;
         *forward = 15;
         *tailAngle = 65;
         setPID(0.0500F, 0.0002F, 0.3000F);
@@ -168,9 +219,10 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
             lookupLine = 5;
         }
     }
+
     if (lookupLine == 5) {
         lookupLine = 5;
-        balanceOn = 0;
+        style = 0;
         *forward = 15;
         *tailAngle = 65;
         setPID(0.0000F, 0.0000F, 0.0000F);
@@ -178,10 +230,11 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
             lookupLine = 6;
         }
     }
+    
     if (lookupLine == 6) {
         lookupLine = 6;
         lookupLineC++;
-        balanceOn = 0;
+        style = 0;
         *forward = 0;
         *tailAngle = 75;
         setPID(0.0000F, 0.0000F, 0.0000F);
@@ -189,7 +242,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
 
     if (lookupLine == 6) {
         lookupLine = 6;
-        balanceOn = 0;
+        style = 0;
         *forward = -10;
         *tailAngle = 82;
         setPID(0.0000F, 0.0000F, 0.0000F);

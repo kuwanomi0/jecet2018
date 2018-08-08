@@ -12,7 +12,6 @@
 #include "Color.h"
 #include "StartSwitch.h"
 #include "RunningDistance.h"
-#include "RunningTime.h"
 #include "SonarDistance.h"
 
 class InstrumentPanel
@@ -22,7 +21,6 @@ private:
     StartSwitch* sswitch;
     RunningDistance* runDistance;
     SonarDistance* sonarDistance;
-    RunningTime* runningTime;
     int white;
     int black;
 
@@ -32,7 +30,7 @@ public:
     int pushTailButton();
     int pushButton();
     int getTotalRGB();
-    void btTask();
+    void btUpdate();
     void stop();
     void update();
     int getRunDistance();

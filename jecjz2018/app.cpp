@@ -89,6 +89,6 @@ void cycHandler(intptr_t unused)
 void btTask(intptr_t unused)
 {
     while(1) {
-        driver->btTask();
+        driver->btUpdate();
     }
 }

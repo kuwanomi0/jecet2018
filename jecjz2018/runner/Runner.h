@@ -18,22 +18,20 @@ class Runner
 private:
     ControlManager* cm;
     InstrumentPanel* inspanel;
-    int balanceOn = 0;
-    int buttonEnable = 0;
+    int style = 0;
     int lookupLine = 0;
     int lookupLineC = 0;
     int distanceTmp = 0;
 
 public:
     Runner();
-    void exec();
     void start(int forward, int turn, int tailAngle);
     void run(int forward, int turn, int tailAngle);
-    void btTask();
-    void setPID(float kp, float ki, float kd);
+    void btUpdate();
     int getDistance();
-    void setBalanceOn(int balanceOn);
     int getBtCmd();
+    void setPID(float kp, float ki, float kd);
+    void setStyle(int style);
     void lookupRun(int* forward, int* turn, int* tailAngle);
 
 };

@@ -27,7 +27,6 @@ public:
     void setPWM(int8_t pwmL, int8_t pwmR);
     void stop();
     void setNoBalanceRunParameter(int forward, int turn);
-    // void 走行する();
 
 };
 #endif  // CONTROL_MOTOR_CONTROL_H

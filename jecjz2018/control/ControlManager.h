@@ -20,6 +20,7 @@ using namespace ev3api;
 class ControlManager
 {
 private:
+    int targetRgb = 0;
     GyroSensor* gyroSensor;
     Balancer* balancer;
     MotorControl* mc;
@@ -27,7 +28,6 @@ private:
     PID* motorPid;
 
 public:
-    int targetRgb = 0;
     ControlManager();
     void gyroInit();
     void tailInit();

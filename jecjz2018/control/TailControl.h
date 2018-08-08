@@ -18,7 +18,6 @@ class TailControl
 {
 private:
     const int PWM_ABS_MAX = 60;
-    // int 目標角;
     Motor* tailMotor;
     PID* tailPid;
 
@@ -27,8 +26,6 @@ public:
     void init();
     void setControl(int angle);
     void stop();
-    // void 設定する(int 目標角);
-    // void 制御する();
 
 };
 #endif  // CONTROL_TAIL_CONTROL_H

@@ -18,7 +18,7 @@ class Color
 {
 private:
     rgb_raw_t mRgbLevel;
-    int mRgbTotal = 365;
+    int mRgbTotal;
     int mRgbBefore;
     float KLPF = 0.6F;
     ColorSensor* colorSensor;
@@ -30,9 +30,6 @@ public:
     int getBrue();
     int getTotalRGB();
     void update();
-    // ev3api::rgb_raw_t 値を取得する();
-    // ev3api::rgb_raw_t LPF値を取得する();
-    // boolean 灰色ですか();
 
 };
 #endif  // MEASURING_COLOR_H

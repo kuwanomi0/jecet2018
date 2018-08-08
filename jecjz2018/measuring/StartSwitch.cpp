@@ -6,8 +6,10 @@
  ** 概要 : タッチセンサーの確認をするクラス
  ******************************************************************************
  **/
+#include "Clock.h"
 #include "StartSwitch.h"
-#include "RunningTime.h"
+
+using namespace ev3api;
 
 StartSwitch::StartSwitch() {
     touchSensor = new TouchSensor(PORT_1);
@@ -17,7 +19,7 @@ StartSwitch::StartSwitch() {
 
 int StartSwitch::pushColorButton() {
     int8_t result = 0;
-    RunningTime runTime;
+    Clock clock;
     if (mBtCmd == 'w') {
         result = 1;
     }
@@ -25,13 +27,13 @@ int StartSwitch::pushColorButton() {
         result = 2;
     }
 
-    runTime.sleep(1);
-	return result;
+    clock.sleep(1);
+    return result;
 }
 
 int StartSwitch::pushTailButton() {
     int8_t result = 0;
-    RunningTime runTime;
+    Clock clock;
     if (mBtCmd == '[') {
         result = 1;
     }
@@ -39,22 +41,22 @@ int StartSwitch::pushTailButton() {
         result = 2;
     }
 
-    runTime.sleep(1);
-	return result;
+    clock.sleep(1);
+    return result;
 }
 
 int StartSwitch::pushButton() {
     int8_t result = 0;
-    RunningTime runTime;
+    Clock clock;
     if (touchSensor->isPressed() || mBtCmd == 1 || mBtCmd == 2 || mBtCmd == 3) {
         result = 1;
     }
 
-    runTime.sleep(10);
-	return result;
+    clock.sleep(10);
+    return result;
 }
 
-void StartSwitch::btTask() {
+void StartSwitch::btUpdate() {
         uint8_t c = fgetc(bt);
         switch(c)
         {
