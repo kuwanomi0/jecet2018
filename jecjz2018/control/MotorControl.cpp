@@ -47,7 +47,7 @@ void MotorControl::stop() {
     rightMotor->reset();
 }
 
-void MotorControl::setNoBalanceRunParameter(int forward, int turn) {
+void MotorControl::setNoBalanceRun(int forward, int turn) {
     int pwmL = forward + turn;
     int pwmR = forward - turn;
 

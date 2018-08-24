@@ -26,7 +26,7 @@ public:
     int32_t getRMotorAngle();
     void setPWM(int8_t pwmL, int8_t pwmR);
     void stop();
-    void setNoBalanceRunParameter(int forward, int turn);
+    void setNoBalanceRun(int forward, int turn);
 
 };
 #endif  // CONTROL_MOTOR_CONTROL_H

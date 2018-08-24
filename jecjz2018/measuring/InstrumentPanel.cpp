@@ -55,7 +55,7 @@ int InstrumentPanel::pushTailButton() {
 int InstrumentPanel::pushButton() {
     if (sswitch->getBtCmd() == '\r') {
         color->update();
-        syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d\r", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue(), getSonarAlert());
+        syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d RGB:%3d\r", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue(), color->getTotalRGB());
         sswitch->setBtCmd(0);
     }
     return sswitch->pushButton();
@@ -76,7 +76,8 @@ void InstrumentPanel::stop() {
 void InstrumentPanel::update() {
     color->update();
     if (sswitch->getBtCmd() == '\r') {
-        syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue());
+        // syslog(LOG_NOTICE, "DIS %5d  R:%3d G:%3d B:%3d", runDistance->getRunDistance(), color->getRed(), color->getGreen(), color->getBrue());
+        syslog(LOG_NOTICE, "DIS %5d RGB:%3d\r", runDistance->getRunDistance(), color->getTotalRGB());
         sswitch->setBtCmd(0);
     }
 }

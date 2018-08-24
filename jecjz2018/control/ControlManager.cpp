@@ -45,14 +45,15 @@ void ControlManager::running(int forward, int turn, int tailAngle, int totalRgb)
 }
 
 void ControlManager::noBalanceRun(int forward, int turn, int tailAngle, int totalRgb) {
-    turn = motorPid->calcControl(totalRgb - 54) + turn;
+    float KRGB = getKRGB(tailAngle);
+    turn = motorPid->calcControl(totalRgb - (targetRgb * KRGB)) + turn;
     balancer->setCommand(forward, turn);
     balancer->update(gyroSensor->getAnglerVelocity(), mc->getRMotorAngle(), mc->getLMotorAngle(), (int)ev3_battery_voltage_mV());
     if (forward >= 0) {
-        mc->setNoBalanceRunParameter(forward, turn);
+        mc->setNoBalanceRun(forward, turn);
     }
     else {
-        mc->setNoBalanceRunParameter(forward, -turn);
+        mc->setNoBalanceRun(forward, -turn);
     }
     tc->setControl(tailAngle);
 }
@@ -68,4 +69,12 @@ void ControlManager::setPID(float kp, float ki, float kd) {
 
 void ControlManager::setTargetRgb(int targetRgb) {
     this->targetRgb = targetRgb;
+}
+
+float ControlManager::getKRGB(int tailAngle) {
+    float diff = 95.0F - (float)tailAngle;
+    if (diff < 0.0F) {
+        diff = 0.0F;
+    }
+    return (102.0F + ((-3.8F) * diff) + (0.038F * diff * diff)) / 100.0F;
 }

@@ -190,7 +190,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
             lookupLineC++;
         }
         else {
-            setPID(0.0100F, 0.0000F, 0.0000F);
+            setPID(0.0000F, 0.0000F, 0.0000F);
         }
         if (getDistance() - distanceTmp < -50) {
             lookupLine = 44;
@@ -230,7 +230,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
             lookupLine = 6;
         }
     }
-    
+
     if (lookupLine == 6) {
         lookupLine = 6;
         lookupLineC++;
