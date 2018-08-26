@@ -13,19 +13,18 @@ ImpactSensor::ImpactSensor() {
 }
 
 int ImpactSensor::alert() {
-    static uint32_t gyroCounter = 0;
     int32_t alert = 0;
     int32_t impact;
 
-    if (++gyroCounter == 4/4) {
-        impact = gyroSensor->getAngle();
-        if ((-30 >= impact) || (impact >= 30)) {
-            alert = 1;
-        }
-        else {
-            alert = 0;
-        }
-        gyroCounter = 0;
+    impact = gyroSensor->getAnglerVelocity();
+    if (impact < 0) {
+        impact = impact * (-1);
+    }
+    if (impact >= 130) {
+        alert = 1;
+    }
+    else {
+        alert = 0;
     }
 
     return alert;
