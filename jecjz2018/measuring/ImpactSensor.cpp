@@ -9,9 +9,24 @@
 #include "ImpactSensor.h"
 
 ImpactSensor::ImpactSensor() {
-	gyroSensor = new GyroSensor(PORT_4);
+    gyroSensor = new GyroSensor(PORT_4);
 }
 
 int ImpactSensor::alert() {
-	return 0;
+    static uint32_t counter = 0;
+    int32_t alert = 0;
+    int32_t impact;
+
+    if (++counter == 4/4) {
+        impact = gyroSensor->getAngle();
+        if ((-30 >= impact) || (impact >= 30)) {
+            alert = 1;
+        }
+        else {
+            alert = 0;
+        }
+        counter = 0;
+    }
+
+    return alert;
 }
