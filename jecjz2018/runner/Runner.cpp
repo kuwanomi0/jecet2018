@@ -184,7 +184,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
         style = 0;
         *forward = -30;
         *turn = 0;
-        *tailAngle = 65;
+        *tailAngle = 62;
         if (lookupLineC < 1800/4) {
             setPID(0.0F,0.0F,0.0F);
             lookupLineC++;
