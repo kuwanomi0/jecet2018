@@ -216,16 +216,27 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
         *tailAngle = 65;
         setPID(0.0500F, 0.0002F, 0.3000F);
         if (getDistance() - distanceTmp > 440) {
-            lookupLine = 5;
+            lookupLine = 55;
         }
     }
+
+      if (lookupLine == 55) {
+          lookupLine = 55;
+          style = 0;
+          *forward = 15;
+          *tailAngle = 65;
+          setPID(0.0000F, 0.0000F, 0.0000F);
+          if (getDistance() - distanceTmp > 720) {
+              lookupLine = 6;
+          }
+      }
 
     if (lookupLine == 5) {
         lookupLine = 5;
         style = 0;
         *forward = 15;
         *tailAngle = 65;
-        setPID(0.0000F, 0.0000F, 0.0000F);
+        setPID(0.0500F, 0.0002F, 0.3000F);
         if (getDistance() - distanceTmp > 920) {
             lookupLine = 6;
         }
