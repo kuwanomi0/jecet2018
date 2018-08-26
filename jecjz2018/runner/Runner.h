@@ -26,7 +26,7 @@ private:
 public:
     Runner();
     void start(int forward, int turn, int tailAngle);
-    void run(int forward, int turn, int tailAngle);
+    void run(int forward, int turn, int tailAngle, float krgb);
     void btUpdate();
     int getDistance();
     int getBtCmd();

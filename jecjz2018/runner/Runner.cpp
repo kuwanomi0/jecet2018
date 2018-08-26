@@ -60,12 +60,12 @@ void Runner::start(int forward, int turn, int tailAngle) {
  * 返り値 : なし
  * 概要   : 走行の処理をする
  */
-void Runner::run(int forward, int turn, int tailAngle) {
+void Runner::run(int forward, int turn, int tailAngle, float krgb) {
     inspanel->update();
 
     lookupRun(&forward, &turn, &tailAngle);
 
-    int totalRGB = inspanel->getTotalRGB();
+    int totalRGB = inspanel->getTotalRGB() / krgb;
     if (style == 1) {
         cm->running(forward, turn, tailAngle, totalRGB);
     }
