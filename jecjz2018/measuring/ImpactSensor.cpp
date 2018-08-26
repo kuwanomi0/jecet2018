@@ -1,20 +1,17 @@
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <assert.h>
-
+/**
+ ******************************************************************************
+ ** ファイル名 : ImpactSensor.cpp
+ ** クラス名   : ImpactSensor
+ **
+ ** 概要 : 衝撃検知の計算を行うクラス
+ ******************************************************************************
+ **/
 #include "ImpactSensor.h"
 
-namespace measuring
-{
+ImpactSensor::ImpactSensor() {
+	gyroSensor = new GyroSensor(PORT_4);
+}
 
-int ImpactSensor::衝撃を検知する()
-{
+int ImpactSensor::alert() {
 	return 0;
 }
-
-void ImpactSensor::LPF値を取得する()
-{
-}
-}  // namespace measuring

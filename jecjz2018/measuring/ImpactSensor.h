@@ -9,16 +9,18 @@
 #ifndef MEASURING_IMPACT_SENSOR_H
 #define MEASURING_IMPACT_SENSOR_H
 
-#include "ev3api/GyroSensor.h"
+#include "GyroSensor.h"
+
+using namespace ev3api;
 
 class ImpactSensor
 {
 private:
-    ev3api::GyroSensor gyroSensor;
+    GyroSensor* gyroSensor;
 
 public:
-    int 衝撃を検知する();
-    void LPF値を取得する();
+    ImpactSensor();
+    int alert();
 
 };
 #endif  // MEASURING_IMPACT_SENSOR_H
