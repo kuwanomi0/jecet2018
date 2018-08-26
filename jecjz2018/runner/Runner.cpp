@@ -235,9 +235,9 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
         lookupLine = 5;
         style = 0;
         *forward = 15;
-        *tailAngle = 65;
+        *tailAngle = 70;
         setPID(0.0500F, 0.0002F, 0.3000F);
-        if (getDistance() - distanceTmp > 920) {
+        if (getDistance() - distanceTmp > 900) {
             lookupLine = 6;
         }
     }
@@ -255,7 +255,7 @@ void Runner::lookupRun(int* forward, int* turn, int* tailAngle) {
         lookupLine = 6;
         style = 0;
         *forward = -10;
-        *tailAngle = 82;
+        *tailAngle = 85;
         setPID(0.0000F, 0.0000F, 0.0000F);
         if (lookupLineC > 3200/4) {
             inspanel->setBtCmd(6);
