@@ -13,11 +13,11 @@ ImpactSensor::ImpactSensor() {
 }
 
 int ImpactSensor::alert() {
-    static uint32_t counter = 0;
+    static uint32_t gyroCounter = 0;
     int32_t alert = 0;
     int32_t impact;
 
-    if (++counter == 4/4) {
+    if (++gyroCounter == 4/4) {
         impact = gyroSensor->getAngle();
         if ((-30 >= impact) || (impact >= 30)) {
             alert = 1;
@@ -25,7 +25,7 @@ int ImpactSensor::alert() {
         else {
             alert = 0;
         }
-        counter = 0;
+        gyroCounter = 0;
     }
 
     return alert;
