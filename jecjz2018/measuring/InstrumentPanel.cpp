@@ -13,6 +13,7 @@ InstrumentPanel::InstrumentPanel() {
     sswitch = new StartSwitch();
     runDistance = new RunningDistance();
     sonarDistance = new SonarDistance();
+    impactSensor = new ImpactSensor();
 }
 
 int InstrumentPanel::pushColorButton() {
@@ -97,4 +98,8 @@ void InstrumentPanel::setBtCmd(int btCmd) {
 
 int InstrumentPanel::getSonarAlert() {
     return sonarDistance->alert();
+}
+
+int InstrumentPanel::getImpactAlert() {
+    return impactSensor->alert();
 }

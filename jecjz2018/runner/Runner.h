@@ -21,6 +21,7 @@ private:
     int style = 0;
     int lookupLine = 0;
     int lookupLineC = 0;
+    int seesawLine = 0;
     int distanceTmp = 0;
 
 public:
@@ -33,6 +34,7 @@ public:
     void setPID(float kp, float ki, float kd);
     void setStyle(int style);
     void lookupRun(int* forward, int* turn, int* tailAngle);
+    void seesawRun(int* forward, int* turn, int* tailAngle);
 
 };
 #endif  // RUNNER_RUNNER_H

@@ -13,6 +13,7 @@
 #include "StartSwitch.h"
 #include "RunningDistance.h"
 #include "SonarDistance.h"
+#include "ImpactSensor.h"
 
 class InstrumentPanel
 {
@@ -21,6 +22,7 @@ private:
     StartSwitch* sswitch;
     RunningDistance* runDistance;
     SonarDistance* sonarDistance;
+    ImpactSensor* impactSensor;
     int white;
     int black;
 
@@ -36,6 +38,7 @@ public:
     int getRunDistance();
     int getBtCmd();
     int getSonarAlert();
+    int getImpactAlert();
     void setBtCmd(int mBtCmd);
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H
