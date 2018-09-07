@@ -21,59 +21,42 @@
 #define _debug(x)
 #endif
 
-/* Bluetooth */
-// static int32_t   bt_cmd = 0;
-// static FILE     *bt = NULL;
-
 Driver* driver;
 
-//*****************************************************************************
-// 関数名 : mainTask
-// 引数   : 拡張情報
-// 返り値 : なし
-// 概要   : メインタスク
-//*****************************************************************************
+/**
+ * メインタスク
+ * @param unused 拡張情報
+ */
 void mainTask(intptr_t unused)
 {
     char buf[64];
     driver = new Driver();
-
-    // bt = ev3_serial_open_file(EV3_SERIAL_BT);
-    // assert(bt != NULL);
 
     act_tsk(BT_TASK);
 
     driver->start();
 
     ER er = ev3_sta_cyc(CYC_HANDLER);   //周期ハンドラを起動
-    sprintf(buf, "main_task: error_code=%d", MERCD(er) );   // APIのエラーコードの表示
-    //ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT*1);     // の仕方です。
+    sprintf(buf, "main_task: error_code=%d", MERCD(er) );   // APIのエラーコードの表示の仕方です。
 
     slp_tsk();
-
-    // ter_tsk(BT_TASK);
-    // fclose(bt);
 
     ext_tsk();
 }
 
-//*****************************************************************************
-// 関数名 : controllerTask
-// 引数   : 拡張情報
-// 返り値 : なし
-// 概要   : コントローラータスク
-//*****************************************************************************
+/**
+ * コントロールタスク
+ * @param unused 拡張情報
+ */
 void controllerTask(intptr_t unused)
 {
     driver->exec();
 }
 
-//*****************************************************************************
-// 関数名 : cyc_handler
-// 引数   : 拡張情報
-// 返り値 : なし
-// 概要   : 周期ハンドラ(4ms)
-//*****************************************************************************
+/**
+ * 周期ハンドラ(4ms)
+ * @param unused 拡張情報
+ */
 void cycHandler(intptr_t unused)
 {
     act_tsk(CONTROLLER_TASK);

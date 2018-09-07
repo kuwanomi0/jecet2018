@@ -8,6 +8,9 @@
  **/
 #include "InstrumentPanel.h"
 
+/**
+ * コンストラクタ
+ */
 InstrumentPanel::InstrumentPanel() {
     color = new Color();
     sswitch = new StartSwitch();
@@ -16,15 +19,20 @@ InstrumentPanel::InstrumentPanel() {
     impactSensor = new ImpactSensor();
 }
 
+/**
+ * 色所得
+ * @return target 目標RGB値
+ * @comment RGB目標値に必要な白、黒の値を取得する
+ */
 int InstrumentPanel::pushColorButton() {
     int target;
     if (sswitch->pushColorButton() == 1) {
         color->update();
-        white = color->getTotalRGB();
+        white = color->getNaturalTotalRGB();
     }
     if (sswitch->pushColorButton() == 2) {
         color->update();
-        black = color->getTotalRGB();
+        black = color->getNaturalTotalRGB();
     }
 
     target = (white + black) / 2;
@@ -37,6 +45,11 @@ int InstrumentPanel::pushColorButton() {
     return target;
 }
 
+/**
+ * 尻尾角度指示取得
+ * @return target 尻尾角度調整値
+ * @comment スタート待機時に尻尾角度調整値を渡す
+ */
 int InstrumentPanel::pushTailButton() {
     int target = 0;
     if (sswitch->pushTailButton() == 1) {
@@ -53,6 +66,11 @@ int InstrumentPanel::pushTailButton() {
     return target;
 }
 
+/**
+ * スタート指示取得
+ * @return スタート指示
+ * @comment スタート命令を取得する
+ */
 int InstrumentPanel::pushButton() {
     if (sswitch->getBtCmd() == '\r') {
         color->update();
@@ -62,18 +80,31 @@ int InstrumentPanel::pushButton() {
     return sswitch->pushButton();
 }
 
+/**
+ * RGB値取得
+ * @return RGB値
+ */
 int InstrumentPanel::getTotalRGB() {
     return color->getTotalRGB();
 }
 
+/**
+ * BT更新
+ */
 void InstrumentPanel::btUpdate() {
     sswitch->btUpdate();
 }
 
+/**
+ * BT停止
+ */
 void InstrumentPanel::stop() {
     sswitch->btStop();
 }
 
+/**
+ * 走行情報更新
+ */
 void InstrumentPanel::update() {
     color->update();
     if (sswitch->getBtCmd() == '\r') {
@@ -83,23 +114,45 @@ void InstrumentPanel::update() {
     }
 }
 
+/**
+ * 走行距離取得
+ * @return 走行距離
+ */
 int InstrumentPanel::getRunDistance() {
     return runDistance->getRunDistance();
 }
 
-
+/**
+ * BtCmd取得
+ * @return BtCmd
+ */
 int InstrumentPanel::getBtCmd() {
     return sswitch->getBtCmd();
 }
 
+/**
+ * BtCmd設定
+ * @param Btcmd
+ * @comment BTにBtCmd値を設定する
+ *          主な用途は0を指定してリセットを行い、誤作動を防止させること
+ */
 void InstrumentPanel::setBtCmd(int btCmd) {
     sswitch->setBtCmd(btCmd);
 }
 
+
+/**
+ * 障害物検知状態取得
+ * @return 障害物検知状態
+ */
 int InstrumentPanel::getSonarAlert() {
     return sonarDistance->alert();
 }
 
+/**
+ * 衝撃検知状態取得
+ * @return 衝撃検知状態
+ */
 int InstrumentPanel::getImpactAlert() {
     return impactSensor->alert();
 }

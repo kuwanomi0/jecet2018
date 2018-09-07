@@ -23,8 +23,8 @@ private:
     RunningDistance* runDistance;
     SonarDistance* sonarDistance;
     ImpactSensor* impactSensor;
-    int white;
-    int black;
+    int white;  /* 目標RGB値計算用 白 */
+    int black;  /* 目標RGB値計算用 黒 */
 
 public:
     InstrumentPanel();

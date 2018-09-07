@@ -7,11 +7,17 @@
  ******************************************************************************
  **/
 #include "SonarDistance.h"
-
+/**
+ * コンストラクタ
+ */
 SonarDistance::SonarDistance() {
     sonarSensor = new SonarSensor(PORT_2);
 }
 
+/**
+ * 障害物検知状態取得
+ * @param 障害物検知状態
+ */
 int SonarDistance::alert() {
     static uint32_t counter = 0;
     int32_t alert = 0;

@@ -23,10 +23,11 @@ Driver::Driver() {
  * 関数名 : start
  * 引数   : なし
  * 返り値 : なし
- * 概要   : スタート待機の指示を出す
+ * 概要   : スタート待機を行いコースを設定する
  */
 void Driver::start() {
     runner->start(0, 0, 95);
+    // TODO ここの処理は新たに作成するコースクラスで実装
     if (runner->getBtCmd() == 1) {
         mCourse = lCourse;
     }
@@ -45,6 +46,7 @@ void Driver::start() {
  * 概要   : コースから値を取得し走行の指示を出す
  */
 void Driver::exec() {
+    // TODO この処理は新たに作成するコースクラスで実装
     if (runner->getDistance() >= mCourse[courseNumber].getDis()) {
         courseNumber++;
         runner->setStyle(mCourse[courseNumber].getStyle());

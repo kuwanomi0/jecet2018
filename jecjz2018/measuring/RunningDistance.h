@@ -22,7 +22,7 @@ private:
 
 public:
     RunningDistance();
-    int getRunDistance();                        // 走行距離を取得する
+    int getRunDistance();
 
 };
 #endif  // MEASURING_RUNNING_DISTANCE_H

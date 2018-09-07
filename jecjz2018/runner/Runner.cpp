@@ -23,18 +23,12 @@ Runner::Runner() {
  * 引数   : int forward, int turn, int tailAngle
  * 返り値 : なし
  * 概要   : スタート待機の処理をする
+ * TODO whileで処理を行っているためタスク化を考える
  */
 void Runner::start(int forward, int turn, int tailAngle) {
     cm->tailInit();
     while (1) {
         int tailTMP = inspanel->pushTailButton();
-
-        if (inspanel->getSonarAlert() == 1) {
-            ev3_led_set_color(LED_RED);
-        }
-        else {
-            ev3_led_set_color(LED_GREEN);
-        }
 
         if (tailTMP != 0) {
             tailAngle += tailTMP;
@@ -62,12 +56,12 @@ void Runner::start(int forward, int turn, int tailAngle) {
  */
 void Runner::run(int forward, int turn, int tailAngle, float krgb) {
     inspanel->update();
-    if (seesawLine == 0) {
+    // if (seesawLine == 0) {
         lookupRun(&forward, &turn, &tailAngle);
-    }
-    if (lookupLine == 0) {
-        seesawRun(&forward, &turn, &tailAngle);
-    }
+    // }
+    // if (lookupLine == 0) {
+        // seesawRun(&forward, &turn, &tailAngle);
+    // }
 
     int totalRGB = inspanel->getTotalRGB() / krgb;
     if (style == 1) {
@@ -142,19 +136,19 @@ void Runner::setStyle(int style) {
  * 概要   : ルックアップに必要な走行情報にアドレスに直に書き換える
  * TODO   : このメソッドは配列などにできると思うのでもう少し改良を行う
  */
-void Runner::seesawRun(int* forward, int* turn, int* tailAngle) {
-    if (seesawLine == 0) {
-        distanceTmp = getDistance();
-    }
-
-    if ((inspanel->getImpactAlert() && seesawLine == 0) || seesawLine == 1) {
-        seesawLine = 1;
-        // style = 1;
-        // *forward = -10;
-        *tailAngle = 75;
-        // setPID(0.0F,0.0F,0.0F);
-    }
-}
+// void Runner::seesawRun(int* forward, int* turn, int* tailAngle) {
+//     if (seesawLine == 0) {
+//         distanceTmp = getDistance();
+//     }
+//
+//     if ((inspanel->getImpactAlert() && seesawLine == 0) || seesawLine == 1) {
+//         seesawLine = 1;
+//         // style = 1;
+//         // *forward = -10;
+//         *tailAngle = 75;
+//         // setPID(0.0F,0.0F,0.0F);
+//     }
+// }
 
 /**
  * 関数名 : lookupRun

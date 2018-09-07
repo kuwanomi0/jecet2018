@@ -8,10 +8,14 @@
  **/
 #include "Color.h"
 
+/**
+ * コンストラクタ
+ */
 Color::Color() {
     colorSensor = new ColorSensor(PORT_3);
 }
 
+/* ゲッター */
 int Color::getRed() {
     return mRgbLevel.r;
 }
@@ -21,13 +25,19 @@ int Color::getGreen() {
 int Color::getBrue() {
     return mRgbLevel.b;
 }
-
+int Color::getNaturalTotalRGB() {
+    return (mRgbLevel.r + mRgbLevel.g + mRgbLevel.b);
+}
 int Color::getTotalRGB() {
     return mRgbTotal;
 }
 
+/**
+ * 更新
+ * @comment LPFけいさんもここで行っている
+ */
 void Color::update() {
     mRgbBefore = mRgbTotal;
     colorSensor->getRawColor(mRgbLevel);
-    mRgbTotal = (mRgbLevel.r + mRgbLevel.g + mRgbLevel.b) * KLPF + mRgbBefore * (1 - KLPF);
+    mRgbTotal = getNaturalTotalRGB() * KLPF + mRgbBefore * (1 - KLPF);
 }

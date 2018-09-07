@@ -9,11 +9,17 @@
 #include "TailControl.h"
 #include "Clock.h"
 
+/**
+ * コンストラクタ
+ */
 TailControl::TailControl() {
     tailMotor = new Motor(PORT_A);
     tailPid = new PID(2.7F, 0.02F, 14.0F);
 }
 
+/**
+ * 初期化
+ */
 void TailControl::init() {
     Clock clock;
     for (int i = 0; i < 500; i++) {
@@ -23,6 +29,10 @@ void TailControl::init() {
     tailMotor->reset();
 }
 
+/**
+ * 制御
+ * @param angle 尻尾角度
+ */
 void TailControl::setControl(int angle) {
     int pwm = (int)tailPid->calcControl(angle - tailMotor->getCount() - 0.5);
     /* PWM出力飽和処理 */
@@ -36,6 +46,9 @@ void TailControl::setControl(int angle) {
     tailMotor->setPWM(pwm);
 }
 
+/**
+ * 尻尾モーター停止
+ */
 void TailControl::stop() {
     tailMotor->reset();
 }

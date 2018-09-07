@@ -11,12 +11,19 @@
 
 using namespace ev3api;
 
+/**
+ * コンストラクタ
+ */
 StartSwitch::StartSwitch() {
     touchSensor = new TouchSensor(PORT_1);
     bt = ev3_serial_open_file(EV3_SERIAL_BT);
     assert(bt != NULL);
 }
 
+/**
+ * RGB設定用スイッチ
+ * @return BtCmd
+ */
 int StartSwitch::pushColorButton() {
     int8_t result = 0;
     Clock clock;
@@ -31,6 +38,10 @@ int StartSwitch::pushColorButton() {
     return result;
 }
 
+/**
+ * 尻尾角度設定用スイッチ
+ * @return BtCmd
+ */
 int StartSwitch::pushTailButton() {
     int8_t result = 0;
     Clock clock;
@@ -45,6 +56,10 @@ int StartSwitch::pushTailButton() {
     return result;
 }
 
+/**
+ * スタート用スイッチ
+ * @return BtCmd
+ */
 int StartSwitch::pushButton() {
     int8_t result = 0;
     Clock clock;
@@ -56,6 +71,9 @@ int StartSwitch::pushButton() {
     return result;
 }
 
+/**
+ * BtCmd受信
+ */
 void StartSwitch::btUpdate() {
         uint8_t c = fgetc(bt);
         switch(c)
@@ -97,15 +115,26 @@ void StartSwitch::btUpdate() {
         fputc(c, bt); /* エコーバック */
 }
 
+/**
+ * BTタスク停止
+ */
 void StartSwitch::btStop() {
     ter_tsk(BT_TASK);
     fclose(bt);
 }
 
+/**
+ * BtCmd設定
+ * @return mBtCmd
+ */
 int StartSwitch::getBtCmd() {
     return mBtCmd;
 }
 
+/**
+ * BtCmd設定
+ * @param BtCmd
+ */
 void StartSwitch::setBtCmd(int mBtCmd) {
     this->mBtCmd = mBtCmd;
 }

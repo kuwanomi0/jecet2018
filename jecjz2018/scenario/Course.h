@@ -27,9 +27,19 @@ private:
 
 public:
     /**
-     * 関数名 : Course
-     * 引数   : int dis, int time, int impact, int sonerDis, int forward, int turn, int tailAngle, float kp, float ki, float kd, float krgb, int style
-     * 概要   : コンストラクタ
+     * コンストラクタ
+     * @param dis;
+     * @param time;
+     * @param impact;
+     * @param sonerDis;
+     * @param forward;
+     * @param turn;
+     * @param thi tailAngle;
+     * @param kp;
+     * @param ki;
+     * @param kd;
+     * @param krgb;
+     * @param style;
      */
     Course(int dis, int time, int impact, int sonerDis, int forward, int turn, int tailAngle, float kp, float ki, float kd, float krgb, int style) {
         this->dis = dis;

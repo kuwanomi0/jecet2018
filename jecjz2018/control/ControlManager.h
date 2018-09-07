@@ -20,12 +20,12 @@ using namespace ev3api;
 class ControlManager
 {
 private:
-    int targetRgb = 0;
     GyroSensor* gyroSensor;
     Balancer* balancer;
     MotorControl* mc;
     TailControl* tc;
     PID* motorPid;
+    int targetRgb = 0; /* 目標RGB値 */
 
 public:
     ControlManager();

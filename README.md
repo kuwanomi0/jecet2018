@@ -2,6 +2,11 @@ jecet2018a
 ====
 ETロボコン2018「苦しんで覚えるJEC」のリポジトリ
 
+#### 動作について
+  - キャリブレーション
+    - 走行を行うには白と黒の値を取得して目標RGB値を計算する必要があります。
+    - 白は`w`キー、黒は`b`キーでを押して取得
+
 #### モデルについて
 GoogleDriveで管理しています  https://drive.google.com/drive/folders/1Eer4xp2JzLclUbqO4qx5ejZr96So9AWI
 
