@@ -62,13 +62,12 @@ void cycHandler(intptr_t unused)
     act_tsk(CONTROLLER_TASK);
 }
 
-//*****************************************************************************
-// 関数名 : bt_task
-// 引数 : unused
-// 返り値 : なし
-// 概要 : Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
-//       ASCIIコードで1を送信すると、リモートスタートする。
-//*****************************************************************************
+/**
+ * BTタスク
+ * @param unused 拡張情報
+ * @comment Bluetooth通信によるリモートスタート。 Tera Termなどのターミナルソフトから、
+ *          ASCIIコードで1を送信すると、リモートスタートする。
+ */
 void btTask(intptr_t unused)
 {
     while(1) {

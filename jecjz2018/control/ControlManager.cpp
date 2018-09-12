@@ -44,7 +44,7 @@ void ControlManager::wheelInit() {
  * バランサー初期化
  */
 void ControlManager::balancerInit() {
-    balancer->init(2);
+    balancer->init(0);
 }
 
 /**

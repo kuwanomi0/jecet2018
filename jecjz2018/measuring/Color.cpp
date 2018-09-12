@@ -34,7 +34,7 @@ int Color::getTotalRGB() {
 
 /**
  * 更新
- * @comment LPFけいさんもここで行っている
+ * @comment LPF計算もここで行っている
  */
 void Color::update() {
     mRgbBefore = mRgbTotal;

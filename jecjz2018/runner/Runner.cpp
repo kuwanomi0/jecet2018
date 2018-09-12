@@ -9,9 +9,7 @@
 #include "Runner.h"
 
 /**
- * 関数名 : Runner
- * 引数   : なし
- * 概要   : コンストラクタ
+ * コンストラクタ
  */
 Runner::Runner() {
     cm = new ControlManager();
@@ -19,11 +17,11 @@ Runner::Runner() {
 }
 
 /**
- * 関数名 : start
- * 引数   : int forward, int turn, int tailAngle
- * 返り値 : なし
- * 概要   : スタート待機の処理をする
- * TODO whileで処理を行っているためタスク化を考える
+ * スタート待機処理
+ * @param forward    前進
+ * @param turn       旋回
+ * @param tailAngle  尻尾角度
+ * @comment TODO whileで処理を行っているためタスク化を考える
  */
 void Runner::start(int forward, int turn, int tailAngle) {
     cm->tailInit();
@@ -49,10 +47,10 @@ void Runner::start(int forward, int turn, int tailAngle) {
 }
 
 /**
- * 関数名 : run
- * 引数   : int forward, int turn, int tailAngle
- * 返り値 : なし
- * 概要   : 走行の処理をする
+ * 走行処理
+ * @param forward    前進
+ * @param turn       旋回
+ * @param tailAngle  尻尾角度
  */
 void Runner::run(int forward, int turn, int tailAngle, float krgb) {
     inspanel->update();
@@ -80,50 +78,41 @@ void Runner::run(int forward, int turn, int tailAngle, float krgb) {
 }
 
 /**
- * 関数名 : btUpdate
- * 引数   : なし
- * 返り値 : なし
- * 概要   : Bluetoothからの情報を更新する
+ * BT更新
  */
 void Runner::btUpdate() {
     inspanel->btUpdate();
 }
 
 /**
- * 関数名 : getDistance
- * 引数   : なし
- * 返り値 : int 走行距離
- * 概要   : 現在の走行距離を取得する
+ * 総走行距離取得
+ * @return 総走行距離
  */
 int Runner::getDistance() {
     return inspanel->getRunDistance();
 }
 
 /**
- * 関数名 : getBtCmd
- * 引数   : なし
- * 返り値 : int BTコマンド
- * 概要   : 現在のBTコマンド値を取得する
+ * BtCmd取得
+ * @return BtCmd
  */
 int Runner::getBtCmd() {
     return inspanel->getBtCmd();
 }
 
 /**
- * 関数名 : setPID
- * 引数   : float kp, float ki, float kd
- * 返り値 : なし
- * 概要   : ライントレースに必要なPID係数を設定する
+ * PID係数設定
+ * @param kp 係数P
+ * @param ki 係数I
+ * @param kd 係数D
  */
 void Runner::setPID(float kp, float ki, float kd) {
     cm->setPID(kp, ki, kd);
 }
 
 /**
- * 関数名 : setStyle
- * 引数   : int getStyle
- * 返り値 : なし
- * 概要   : 走行方法を設定する
+ * 走行方法設定
+ * @return style
  */
 void Runner::setStyle(int style) {
     this->style = style;
