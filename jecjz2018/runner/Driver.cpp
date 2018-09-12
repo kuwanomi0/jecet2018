@@ -15,6 +15,7 @@
  */
 Driver::Driver() {
     runner = new Runner();
+    clock = new Clock();
 }
 
 /**
@@ -32,6 +33,7 @@ void Driver::start() {
     else {
         mCourse = dCourse;
     }
+    beforeClock = clock->now();
 }
 
 /**
@@ -39,12 +41,35 @@ void Driver::start() {
  */
 void Driver::exec() {
     // TODO この処理は新たに作成するコースクラスで実装
-    if (runner->getDistance() >= mCourse[courseNumber].getDis()) {
+    syslog(LOG_NOTICE, "TIME %d\r", clock->now() - beforeClock);
+    if (courseChange()) {
         courseNumber++;
         runner->setStyle(mCourse[courseNumber].getStyle());
         runner->setPID(mCourse[courseNumber].getP(), mCourse[courseNumber].getI(), mCourse[courseNumber].getD());
+        beforeClock = clock->now();
     }
     runner->run(mCourse[courseNumber].getForward(), mCourse[courseNumber].getTurn(), mCourse[courseNumber].getTailAngle(), mCourse[courseNumber].getKrgb());
+}
+
+/**
+ * 区間変更条件確認
+ * @param changeCnt 変更情報
+ */
+int Driver::courseChange() {
+    int changeCnt = 0;
+    if (mCourse[courseNumber].getDis() != 0) {
+        if (runner->getDistance() >= mCourse[courseNumber].getDis()) {
+            changeCnt = 1;
+        }
+    }
+
+    if (mCourse[courseNumber].getTime() != 0) {
+        if ((clock->now() - beforeClock) >= mCourse[courseNumber].getTime()) {
+            changeCnt = 1;
+        }
+    }
+
+    return changeCnt;
 }
 
 /**
