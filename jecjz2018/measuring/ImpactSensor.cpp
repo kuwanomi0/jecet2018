@@ -12,6 +12,10 @@ ImpactSensor::ImpactSensor() {
     gyroSensor = new GyroSensor(PORT_4);
 }
 
+/**
+ * 衝撃検知量状態取得
+ * @return 衝撃検知状態
+ */
 int ImpactSensor::alert() {
     int32_t alert = 0;
     int32_t impact;
@@ -28,4 +32,12 @@ int ImpactSensor::alert() {
     }
 
     return alert;
+}
+
+/**
+ * 衝撃検知量取得
+ * @return 衝撃検知量
+ */
+int ImpactSensor::getGyroImpact() {
+    return 0;
 }

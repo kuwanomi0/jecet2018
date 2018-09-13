@@ -120,6 +120,14 @@ void ControlManager::setTargetRgb(int targetRgb) {
 }
 
 /**
+ * ジャイロオフセット設定
+ * @param gyroOffset ジャイロオフセット
+ */
+void ControlManager::setGyroOffset(int gyroOffset) {
+    balancer->setGyroOffset(gyroOffset);
+}
+
+/**
  * 走行体傾き時のRGB値比率
  * @param tailAngle 尻尾角度
  * @return 目標RGB値比率

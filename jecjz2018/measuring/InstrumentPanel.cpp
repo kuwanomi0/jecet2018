@@ -158,6 +158,14 @@ int InstrumentPanel::getImpactAlert() {
 }
 
 /**
+ * 衝撃検知量取得
+ * @return 衝撃検知量
+ */
+int InstrumentPanel::getGyroImpact() {
+    return impactSensor->getGyroImpact();
+}
+
+/**
  * 障害物検知距離取得
  * @param 障害物検知距離
  */

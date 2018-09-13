@@ -63,6 +63,14 @@ void Balancer::setCommand(int forward, int turn) {
 }
 
 /**
+ * ジャイロオフセット設定
+ * @param gyroOffset ジャイロオフセット
+ */
+void Balancer::setGyroOffset(int gyroOffset) {
+    mOffset = gyroOffset;
+}
+
+/**
  * 右車輪のPWM値を取得する
  * @return 右車輪のPWM値
  */

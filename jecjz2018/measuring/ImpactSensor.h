@@ -21,6 +21,7 @@ private:
 public:
     ImpactSensor();
     int alert();
+    int getGyroImpact();
 
 };
 #endif  // MEASURING_IMPACT_SENSOR_H

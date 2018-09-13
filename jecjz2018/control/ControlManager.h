@@ -39,6 +39,7 @@ public:
     void stop();
     void setPID(float kp, float ki, float kd);
     void setTargetRgb(int targetRgb);
+    void setGyroOffset(int gyroOffset);
     float getKRGB(int tailAngle);
 };
 #endif  // CONTROL_CONTROL_MANAGER_H

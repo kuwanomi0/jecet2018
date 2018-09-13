@@ -45,6 +45,7 @@ void Driver::exec() {
     syslog(LOG_NOTICE, "TIME %d\r", clock->now() - beforeClock);
     if (courseChange()) {
         courseNumber++;
+        runner->setGyroOffset(mCourse[courseNumber].getGyroOffset());
         runner->setStyle(mCourse[courseNumber].getStyle());
         runner->setPID(mCourse[courseNumber].getP(), mCourse[courseNumber].getI(), mCourse[courseNumber].getD());
         beforeDistance = runner->getDistance();
@@ -74,6 +75,12 @@ int Driver::courseChange() {
 
     if (mCourse[courseNumber].getTime() != 0) {
         if ((int)(clock->now() - beforeClock) >= mCourse[courseNumber].getTime()) {
+            changeCnt = 1;
+        }
+    }
+
+    if (mCourse[courseNumber].getImpact() != 0) {
+        if (runner->getGyroImpact() <= mCourse[courseNumber].getImpact()) {
             changeCnt = 1;
         }
     }

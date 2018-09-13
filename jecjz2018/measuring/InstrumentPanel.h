@@ -39,6 +39,7 @@ public:
     int getBtCmd();
     int getSonarAlert();
     int getImpactAlert();
+    int getGyroImpact();
     void setBtCmd(int mBtCmd);
     int getSonarDis();
 };

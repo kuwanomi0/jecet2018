@@ -19,6 +19,7 @@ private:
     int forward;    /* 前進速度 */
     int turn;       /* 旋回速度 */
     int tailAngle;  /* 尻尾角度 */
+    int gyroOffset; /* ジャイロオフセット */
     float kp;       /* 係数P */
     float ki;       /* 係数I */
     float kd;       /* 係数D */
@@ -28,20 +29,21 @@ private:
 public:
     /**
      * コンストラクタ
-     * @param dis;
-     * @param time;
-     * @param impact;
-     * @param sonarDis;
-     * @param forward;
-     * @param turn;
-     * @param thi tailAngle;
-     * @param kp;
-     * @param ki;
-     * @param kd;
-     * @param krgb;
-     * @param style;
+     * @param dis
+     * @param time
+     * @param impact
+     * @param sonarDis
+     * @param forward
+     * @param turn
+     * @param tailAngle
+     * @param gyroOffset
+     * @param kp
+     * @param ki
+     * @param kd
+     * @param krgb
+     * @param style
      */
-    Course(int dis, int time, int impact, int sonarDis, int forward, int turn, int tailAngle, float kp, float ki, float kd, float krgb, int style) {
+    Course(int dis, int time, int impact, int sonarDis, int forward, int turn, int tailAngle, int gyroOffset, float kp, float ki, float kd, float krgb, int style) {
         this->dis = dis;
         this->time = time;
         this->impact = impact;
@@ -49,6 +51,7 @@ public:
         this->forward = forward;
         this->turn = turn;
         this->tailAngle = tailAngle;
+        this->gyroOffset = gyroOffset;
         this->kp = kp;
         this->ki = ki;
         this->kd = kd;
@@ -75,6 +78,9 @@ public:
     }
     int getTailAngle() {
         return tailAngle;
+    }
+    int getGyroOffset() {
+        return gyroOffset;
     }
     float getP() {
         return kp;

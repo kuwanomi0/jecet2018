@@ -18,12 +18,13 @@ private:
     int mOffset;
     int8_t mRightPwm;
     int8_t mLeftPwm;
-    
+
 public:
     Balancer();
     void init(int offset);
     void update(int angle, int rwEnc, int lwEnc, int battery);
     void setCommand(int forward, int turn);
+    void setGyroOffset(int gyroOffset);
     int8_t getPwmRight();
     int8_t getPwmLeft();
 

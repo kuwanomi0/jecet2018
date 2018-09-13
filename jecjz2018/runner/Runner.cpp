@@ -83,6 +83,14 @@ int Runner::getDistance() {
 }
 
 /**
+ * 衝撃検知量取得
+ * @return 衝撃検知量取得
+ */
+int Runner::getGyroImpact() {
+    return inspanel->getGyroImpact();
+}
+
+/**
  * 障害物検知距離取得
  * @param 障害物検知距離
  */
@@ -114,6 +122,14 @@ void Runner::setPID(float kp, float ki, float kd) {
  */
 void Runner::setStyle(int style) {
     this->style = style;
+}
+
+/**
+ * ジャイロオフセット設定
+ * @param gyroOffset ジャイロオフセット
+ */
+void Runner::setGyroOffset(int gyroOffset) {
+    cm->setGyroOffset(gyroOffset);
 }
 
 /**

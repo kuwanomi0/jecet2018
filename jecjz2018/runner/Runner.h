@@ -30,10 +30,12 @@ public:
     void run(int forward, int turn, int tailAngle, float krgb);
     void btUpdate();
     int getDistance();
+    int getGyroImpact();
     int getSonarDis();
     int getBtCmd();
     void setPID(float kp, float ki, float kd);
     void setStyle(int style);
+    void setGyroOffset(int gyroOffset);
     void stop();
 };
 #endif  // RUNNER_RUNNER_H
