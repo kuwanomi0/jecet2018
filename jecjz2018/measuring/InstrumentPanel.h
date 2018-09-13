@@ -40,5 +40,6 @@ public:
     int getSonarAlert();
     int getImpactAlert();
     void setBtCmd(int mBtCmd);
+    int getSonarDis();
 };
 #endif  // MEASURING_INSTRUMENT_PANEL_H

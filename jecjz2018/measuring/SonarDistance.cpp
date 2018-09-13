@@ -36,3 +36,11 @@ int SonarDistance::alert() {
 
     return alert;
 }
+
+/**
+ * 障害物検知距離取得
+ * @param 障害物検知距離
+ */
+int SonarDistance::getSonarDis() {
+    return sonarSensor->getDistance();
+}

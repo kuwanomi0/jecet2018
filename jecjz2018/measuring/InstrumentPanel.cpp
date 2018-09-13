@@ -156,3 +156,11 @@ int InstrumentPanel::getSonarAlert() {
 int InstrumentPanel::getImpactAlert() {
     return impactSensor->alert();
 }
+
+/**
+ * 障害物検知距離取得
+ * @param 障害物検知距離
+ */
+int InstrumentPanel::getSonarDis() {
+    return sonarDistance->getSonarDis();
+}

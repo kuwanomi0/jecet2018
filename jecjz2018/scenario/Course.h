@@ -15,7 +15,7 @@ private:
     int dis;        /* 設定距離 */
     int time;       /* 設定時間 */
     int impact;     /* 衝撃検知量 */
-    int sonerDis;   /* 障害物検知距離 */
+    int sonarDis;   /* 障害物検知距離 */
     int forward;    /* 前進速度 */
     int turn;       /* 旋回速度 */
     int tailAngle;  /* 尻尾角度 */
@@ -31,7 +31,7 @@ public:
      * @param dis;
      * @param time;
      * @param impact;
-     * @param sonerDis;
+     * @param sonarDis;
      * @param forward;
      * @param turn;
      * @param thi tailAngle;
@@ -41,11 +41,11 @@ public:
      * @param krgb;
      * @param style;
      */
-    Course(int dis, int time, int impact, int sonerDis, int forward, int turn, int tailAngle, float kp, float ki, float kd, float krgb, int style) {
+    Course(int dis, int time, int impact, int sonarDis, int forward, int turn, int tailAngle, float kp, float ki, float kd, float krgb, int style) {
         this->dis = dis;
         this->time = time;
         this->impact = impact;
-        this->sonerDis = sonerDis;
+        this->sonarDis = sonarDis;
         this->forward = forward;
         this->turn = turn;
         this->tailAngle = tailAngle;
@@ -64,8 +64,8 @@ public:
     int getImpact() {
         return impact;
     }
-    int getSonerDis() {
-        return sonerDis;
+    int getSonarDis() {
+        return sonarDis;
     }
     int getForward() {
         return forward;

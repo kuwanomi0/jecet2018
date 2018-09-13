@@ -21,6 +21,7 @@ private:
 public:
     SonarDistance();
     int alert();
+    int getSonarDis();
 
 };
 #endif  // MEASURING_SONAR_DISTANCE_H

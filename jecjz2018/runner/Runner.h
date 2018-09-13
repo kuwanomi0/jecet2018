@@ -30,11 +30,10 @@ public:
     void run(int forward, int turn, int tailAngle, float krgb);
     void btUpdate();
     int getDistance();
+    int getSonarDis();
     int getBtCmd();
     void setPID(float kp, float ki, float kd);
     void setStyle(int style);
-    void lookupRun(int* forward, int* turn, int* tailAngle);
-    void seesawRun(int* forward, int* turn, int* tailAngle);
-
+    void stop();
 };
 #endif  // RUNNER_RUNNER_H
