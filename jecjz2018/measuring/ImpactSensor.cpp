@@ -39,5 +39,5 @@ int ImpactSensor::alert() {
  * @return 衝撃検知量
  */
 int ImpactSensor::getGyroImpact() {
-    return 0;
+    return gyroSensor->getAnglerVelocity();
 }

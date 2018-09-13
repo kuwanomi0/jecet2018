@@ -42,7 +42,6 @@ void Driver::start() {
  */
 void Driver::exec() {
     // TODO この処理は新たに作成するコースクラスで実装
-    syslog(LOG_NOTICE, "TIME %d\r", clock->now() - beforeClock);
     if (courseChange()) {
         courseNumber++;
         runner->setGyroOffset(mCourse[courseNumber].getGyroOffset());
@@ -80,7 +79,11 @@ int Driver::courseChange() {
     }
 
     if (mCourse[courseNumber].getImpact() != 0) {
-        if (runner->getGyroImpact() <= mCourse[courseNumber].getImpact()) {
+        int tmpImacpt = runner->getGyroImpact();
+        if (tmpImacpt < 0) {
+            tmpImacpt = tmpImacpt * (-1);
+        }
+        if (tmpImacpt >= mCourse[courseNumber].getImpact()) {
             changeCnt = 1;
         }
     }
@@ -90,6 +93,7 @@ int Driver::courseChange() {
             changeCnt = 1;
         }
     }
+    syslog(LOG_NOTICE, "DIS: %5d   TIME: %5d   G: %3d   S: %3d\r", (runner->getDistance() - beforeDistance), (int)(clock->now() - beforeClock), runner->getGyroImpact(), runner->getSonarDis());
 
     return changeCnt;
 }
