@@ -9,7 +9,7 @@
 #ifndef RUNNER_RUNNER_H
 #define RUNNER_RUNNER_H
 
-#define K_FORWARD 1.05
+#define K_FORWARD 1.02
 
 #include "ev3api.h"
 #include "../control/ControlManager.h"
