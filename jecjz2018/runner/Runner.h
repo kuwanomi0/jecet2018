@@ -9,6 +9,8 @@
 #ifndef RUNNER_RUNNER_H
 #define RUNNER_RUNNER_H
 
+#define K_FORWARD 1.05
+
 #include "ev3api.h"
 #include "../control/ControlManager.h"
 #include "../measuring/InstrumentPanel.h"

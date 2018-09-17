@@ -57,7 +57,7 @@ void Runner::run(int forward, int turn, int tailAngle, float krgb) {
 
     int totalRGB = inspanel->getTotalRGB() / krgb;
     if (style == 1) {
-        cm->running(forward, turn, tailAngle, totalRGB);
+        cm->running(forward * K_FORWARD, turn, tailAngle, totalRGB);
     }
     else {
         cm->noBalanceRun(forward, turn, tailAngle, totalRGB);

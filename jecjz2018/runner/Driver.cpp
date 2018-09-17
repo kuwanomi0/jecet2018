@@ -44,6 +44,7 @@ void Driver::exec() {
     // TODO この処理は新たに作成するコースクラスで実装
     if (courseChange()) {
         courseNumber++;
+        ev3_speaker_play_tone(NOTE_C4, 100);
         runner->setGyroOffset(mCourse[courseNumber].getGyroOffset());
         runner->setStyle(mCourse[courseNumber].getStyle());
         runner->setPID(mCourse[courseNumber].getP(), mCourse[courseNumber].getI(), mCourse[courseNumber].getD());
@@ -93,7 +94,8 @@ int Driver::courseChange() {
             changeCnt = 1;
         }
     }
-    syslog(LOG_NOTICE, "DIS: %5d   TIME: %5d   G: %3d   S: %3d\r", (runner->getDistance() - beforeDistance), (int)(clock->now() - beforeClock), runner->getGyroImpact(), runner->getSonarDis());
+    // syslog(LOG_NOTICE, "DIS: %5d   TIME: %5d   G: %3d   S: %3d\r", (runner->getDistance() - beforeDistance), (int)(clock->now() - beforeClock), runner->getGyroImpact(), runner->getSonarDis());
+    // syslog(LOG_NOTICE, "DIS: %5d   TIME: %5d   G: %3d   S: %3d\r", (runner->getDistance() - beforeDistance), (int)(clock->now() - beforeClock), runner->getGyroImpact(), runner->getSonarDis());
 
     return changeCnt;
 }
